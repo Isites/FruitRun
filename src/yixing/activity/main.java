@@ -1,5 +1,5 @@
 package yixing.activity;
-// Download by http://www.codefans.net
+
 import yixing.fruitrun.Button;
 import yixing.fruitrun.CounterDigit;
 import yixing.fruitrun.CounterGroup;
@@ -39,7 +39,6 @@ public class main extends Activity {
 		private static long lastCreationTime = 0;
 		private static final int MIN_CREATION_TIMEOUT = 10000;
 		
-		
 		//MediaPlayer musicPlayerIntro;
 		MediaPlayer musicPlayerLoop;
 		boolean MusicLoopStartedForFirstTime = false;
@@ -49,12 +48,10 @@ public class main extends Activity {
 
 	    private static final int SLEEP_TIME = 300;
 	    
-		/** Called when the activity is first created. */
 	    @Override
 		public void onCreate(Bundle savedInstanceState) {
 	    	super.onCreate(savedInstanceState);
-	    	
-	    	
+
 	    	//setContentView(R.layout.main);	 
 	    	
 	    	PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
@@ -70,7 +67,6 @@ public class main extends Activity {
 	        musicPlayerLoop.setLooping(true);
 			musicPlayerLoop.seekTo(0);
 			musicPlayerLoop.setVolume(0.5f, 0.5f);
-			
 			
 			requestWindowFeature(Window.FEATURE_NO_TITLE);  
 			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -208,8 +204,7 @@ public class main extends Activity {
 			
 	        Thread rHThread = new Thread(this);
 			rHThread.start();
-			
-//			
+
 //			initialize();
 		}
 		
