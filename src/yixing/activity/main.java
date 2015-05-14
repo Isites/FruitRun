@@ -151,6 +151,8 @@ public class main extends Activity {
 		private Bitmap resetButtonImg = null;
 		private Button saveButton = null;
 		private Bitmap saveButtonImg = null;
+		private Button pauseButton = null;
+		private Bitmap pauseButtonImg = null;
 		private RHDrawable blackRHD = null;
 		private Bitmap blackImg = null;
 		private RHDrawable gameLoadingRHD = null;
@@ -191,6 +193,9 @@ public class main extends Activity {
 		private int totalScore = 0;
 		private boolean nineKwasplayed = false;
 		private boolean gameIsLoading = true;
+		
+		
+		private boolean isPause = false;
 		
 
 		public RunnersHighView(Context context) {
@@ -249,7 +254,7 @@ public class main extends Activity {
 			BitmapFactory.Options options = new BitmapFactory.Options();
 			options.inTempStorage = new byte[16*1024];
 			
-			gameLoadingImg = Util.loadBitmapFromAssets("game_loading.jpg"); 
+			gameLoadingImg = Util.loadBitmapFromAssets("game_loading.png"); 
 			gameLoadingRHD = new RHDrawable(0, 0, 1, width, height);
 			gameLoadingRHD.loadBitmap(gameLoadingImg);
 			mRenderer.addMesh(gameLoadingRHD);
@@ -362,6 +367,16 @@ public class main extends Activity {
 					Util.getPercentOfScreenHeight(13));
 			saveButton.loadBitmap(saveButtonImg);
 			mRenderer.addMesh(saveButton);
+			
+			pauseButtonImg =Util.loadBitmapFromAssets("game_button_save.png");
+			pauseButton = new Button(
+					Util.getPercentOfScreenWidth(90), 
+					height-Util.getPercentOfScreenHeight(90),
+					-2, 
+					Util.getPercentOfScreenWidth(10),
+					Util.getPercentOfScreenHeight(10));
+			pauseButton.loadBitmap(pauseButtonImg);
+			mRenderer.addMesh(pauseButton);
 			
 
 			player = new Player(getApplicationContext(), mRenderer, height);
@@ -599,8 +614,12 @@ public class main extends Activity {
 			//			long debugTime = System.currentTimeMillis(); // FIXME DEBUG TIME FOR VIDEO CAPTURE
 			Util.roundStartTime = System.currentTimeMillis();
 			
-			while(isRunning){
-				
+			// display pause button
+			pauseButton.setShowButton(true);
+			pauseButton.z = 1.0f;
+			
+			while(isRunning) {
+				while(isPause == true);
 				starttime = System.currentTimeMillis();
 				
 //				if (debugTime + 15000 < starttime) sleep(100); // FIXME DEBUG TIME FOR VIDEO CAPTURE
@@ -637,6 +656,7 @@ public class main extends Activity {
 						resetButton.z = 1.0f;
 						saveButton.setShowButton(true);
 						saveButton.z = 1.0f;
+
 						if(!deathSoundPlayed){
 							SoundManager.playSound(7, 1, 0.5f, 0.5f, 0);
 							deathSoundPlayed=true;
@@ -830,6 +850,16 @@ public class main extends Activity {
 					player.setJump(false);
 				
 				else if(event.getAction() == MotionEvent.ACTION_DOWN){
+					if(pauseButton.getShowButton()) {
+						if(pauseButton.isClicked(event.getX(), Util.getInstance().toScreenY((int)event.getY()))) {
+							
+							if(isPause == false)
+								isPause = true;
+							else if(isPause == true)
+								isPause = false;
+							//player.reset();
+						}
+					}
 					if (resetButton.getShowButton() || saveButton.getShowButton()) {
 						if(resetButton.isClicked( event.getX(), Util.getInstance().toScreenY((int)event.getY()) ) ){
 							System.gc(); //do garbage collection

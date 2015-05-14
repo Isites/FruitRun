@@ -56,10 +56,11 @@ public final class R {
         public static final int buttonRunnersHigh=0x7f06000c;
         public static final int buttonWebi=0x7f060011;
         public static final int confirm=0x7f06000a;
-        public static final int highscoreButton=0x7f060020;
+        public static final int counter=0x7f06001f;
+        public static final int highscoreButton=0x7f060021;
         public static final int highscoreTable=0x7f060003;
         public static final int imageView2=0x7f060015;
-        public static final int infoButton=0x7f060021;
+        public static final int infoButton=0x7f060022;
         public static final int labelName=0x7f060007;
         public static final int labelScore=0x7f060005;
         public static final int linearLayout1=0x7f060000;
@@ -71,7 +72,7 @@ public final class R {
         public static final int name=0x7f06001e;
         public static final int postOnline=0x7f060009;
         public static final int score=0x7f060006;
-        public static final int startButton=0x7f06001f;
+        public static final int startButton=0x7f060020;
         public static final int title=0x7f060008;
         public static final int titleSaveScore=0x7f060004;
     }
@@ -81,9 +82,10 @@ public final class R {
         public static final int info=0x7f030002;
         public static final int list_row=0x7f030003;
         public static final int list_single_row=0x7f030004;
-        public static final int menu=0x7f030005;
-        public static final int runnershigh=0x7f030006;
-        public static final int test=0x7f030007;
+        public static final int main=0x7f030005;
+        public static final int menu=0x7f030006;
+        public static final int runnershigh=0x7f030007;
+        public static final int test=0x7f030008;
     }
     public static final class raw {
         public static final int bonus=0x7f040000;

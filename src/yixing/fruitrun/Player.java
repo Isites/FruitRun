@@ -56,8 +56,8 @@ public class Player{
 		speedoffsetXMax = Util.getPercentOfScreenWidth(7);
 		speedoffsetXStep = Util.getPercentOfScreenWidth(0.002f);
 		
-		playerSpriteImg = Util.loadBitmapFromAssets("game_character_spritesheet.png");
-		playerSprite = new Sprite(x, y, 0.5f, width, height, 25, 8); 
+		playerSpriteImg = Util.loadBitmapFromAssets("game_normal_character_spritesheet.png");
+		playerSprite = new Sprite(x, y, 0.5f, width, height, 25, 6); 
 		playerSprite.loadBitmap(playerSpriteImg); 
 		glrenderer.addMesh(playerSprite);
 		
