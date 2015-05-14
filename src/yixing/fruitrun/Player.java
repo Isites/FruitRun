@@ -45,8 +45,8 @@ public class Player{
 		x = Util.getPercentOfScreenWidth(9); //70; 
 		y = Settings.FirstBlockHeight+Util.getPercentOfScreenHeight(4);
 		
-		width = Util.getPercentOfScreenWidth(9); //40; dicker //40; nyan cat //60; nyan cat pre minimalize //62; playersprite settings
-		height = width*Util.mWidthHeightRatio; //40; dicker //30;  nyan cat //42; nyan cat pre minimalize //63; playersprite settings
+		width = (float) (Util.getPercentOfScreenWidth(7) / 1.5); //40; dicker //40; nyan cat //60; nyan cat pre minimalize //62; playersprite settings
+		height = (float) (width * Util.mWidthHeightRatio * 1.7); //40; dicker //30;  nyan cat //42; nyan cat pre minimalize //63; playersprite settings
 		
 		velocityMax = Util.getPercentOfScreenHeight(3); //9 Util.getPercentOfScreenHeight(1.875f)
 		velocityDownfallSpeed = velocityMax/30.0f;
@@ -63,8 +63,8 @@ public class Player{
 		
 		playerRect = new Rect();
 		playerRect.left =(int)x;
-		playerRect.top =(int)(y+height);
-		playerRect.right =(int)(x+width);
+		playerRect.top =(int)(y + height);
+		playerRect.right =(int)(x + width);
 		playerRect.bottom =(int)y;
 		
 		ObstacleRect = new Rect();

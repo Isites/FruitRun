@@ -246,9 +246,9 @@ public class main extends Activity {
 			if(Settings.RHDEBUG)
 				Log.d("debug", "displaywidth: " + width + ", displayheight: " + height);
 			
-			Util.mScreenHeight=height;
-			Util.mScreenWidth=width;
-			Util.mWidthHeightRatio=width/height;
+			Util.mScreenHeight = height;
+			Util.mScreenWidth = width;
+			Util.mWidthHeightRatio = width / height;
 			
  
 			BitmapFactory.Options options = new BitmapFactory.Options();
