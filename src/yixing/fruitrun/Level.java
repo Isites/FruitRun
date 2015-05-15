@@ -44,6 +44,13 @@ public class Level {
 	private int leftSlowerIndex;
 	private int rightSlowerIndex;
 	
+	public static Obstacle[] obstacleDataCoin;
+	// 暂定40
+	//dd
+	public static final int maxObstaclesCoin = 40;
+	private int leftCoinIndex;
+	private int rightCoinIndex;
+	
 	public static ObstacleJump[] obstacleDataJumper;
 	public static final int maxObstaclesJumper = maxBlocks;
 	private int leftJumperIndex;
@@ -59,6 +66,9 @@ public class Level {
 	
 	private float obstacleSlowerWidth;
 	private float obstacleSlowerHeight;
+	
+	private float obstacleCoinWidth;
+	private float obstacleCoinHeight;
 	
 	private float obstacleBonusWidth;
 	private float obstacleBonusHeight;
@@ -84,6 +94,7 @@ public class Level {
 		OBSTACLEMASK_7_JUMP_SLOW_BONUS;
 	
 	private Bitmap obstacleSlowImg = null;
+	private Bitmap obstacleCoinImg = null;
 	private Bitmap obstacleBonusImg = null;
 	
 	private boolean slowDown;
@@ -128,6 +139,9 @@ public class Level {
 		obstacleSlowerWidth = Util.getPercentOfScreenWidth(5);
 		obstacleSlowerHeight= Util.getPercentOfScreenWidth(4);
 		
+		obstacleCoinWidth = Util.getPercentOfScreenWidth(3);
+		obstacleCoinHeight= Util.getPercentOfScreenWidth(3);
+		
 		obstacleBonusWidth = Util.getPercentOfScreenWidth(5);
 		obstacleBonusHeight = obstacleBonusWidth/2;
 		obstacleBonusDistanceToBlock = Util.getPercentOfScreenHeight(12);
@@ -157,6 +171,10 @@ public class Level {
 		leftSlowerIndex = 0;
 		rightSlowerIndex = maxObstaclesSlower;
 		
+		obstacleDataCoin = new Obstacle[maxObstaclesCoin];
+		leftCoinIndex = 0;
+		rightCoinIndex = maxObstaclesCoin;
+		
 		obstacleDataJumper = new ObstacleJump[maxObstaclesJumper];
 		leftJumperIndex = 0;
 		rightJumperIndex = maxObstaclesJumper;
@@ -166,6 +184,7 @@ public class Level {
 		rightBonusIndex = maxObstaclesBonus;
 
 		obstacleSlowImg = Util.loadBitmapFromAssets("game_obstacle_slow.png");
+		obstacleCoinImg = Util.loadBitmapFromAssets("game_obstacle_coin.png");
 		obstacleBonusImg =Util.loadBitmapFromAssets("game_obstacle_bonus.png"); 
 		
 		Block.setTextureLeft(Util.loadBitmapFromAssets("game_block_left.png"));
@@ -190,6 +209,7 @@ public class Level {
 		if (obstacleSlowImg != null) obstacleSlowImg.recycle();
 		//if (obstacleJumpImg != null) obstacleJumpImg.recycle();
 		if (obstacleBonusImg != null) obstacleBonusImg.recycle();
+		if (obstacleCoinImg != null) obstacleCoinImg.recycle();
 		//TODO clean bonus effect in obstacleBonus
 		//TODO clean jumper sprite in obstaclejump
 		Block.cleanup();
@@ -269,6 +289,11 @@ public class Level {
 				obstacleDataSlower[i].x -= deltaLevelPosition;
 			}
 			
+			for (int i = 0; i < maxObstaclesCoin; i++)
+			{
+				obstacleDataCoin[i].x -= deltaLevelPosition;
+			}
+			
 			for (int i = 0; i < maxObstaclesBonus; i++)
 			{
 				obstacleDataBonus[i].centerX -= deltaLevelPosition;
@@ -302,6 +327,21 @@ public class Level {
 		
 		leftBlockIndex = 1;
 		rightBlockIndex = 0;
+		
+		// initialize coins
+		for(int i = 0; i < maxObstaclesCoin; i++)
+		{
+			if (firstTime)
+			{
+				obstacleDataCoin[i] = new Obstacle(-1000, 0, 0.9f, obstacleCoinWidth, obstacleCoinHeight, 'c');
+				renderer.addMesh(obstacleDataCoin[i]);
+				obstacleDataCoin[i].loadBitmap(obstacleCoinImg);
+			}
+			
+			obstacleDataCoin[i].x = -1000;
+			obstacleDataCoin[i].didTrigger = false;
+		}
+		
 		
 		if(Settings.RHDEBUG)
 			Log.d("debug", "before for");
@@ -337,6 +377,7 @@ public class Level {
 		
 		oldHeight = blockData[rightBlockIndex].BlockRect.top;
 		
+		// if 第一个 then 决定新Block条的宽高 间距
 		if(BlockNumber==-1){
 			if (oldHeight > height/2)
 				newHeight = (int)(Math.random()*height/3*2 + height/8);
@@ -369,6 +410,7 @@ public class Level {
 				distance = Player.width+10;
 		}else{	
 			distance = Player.width+5;
+			// 产生新block条的宽高
 			switch (BlockNumber){
 				case 1:
 					newHeight=oldHeight; 
@@ -376,15 +418,15 @@ public class Level {
 					break;
 				case 2:
 					newHeight=oldHeight+Util.getPercentOfScreenHeight(8);
-					newWidth=Util.getPercentOfScreenWidth(80);
+					newWidth=Util.getPercentOfScreenWidth(74);
 					break;
 				case 3:
 					newHeight=oldHeight;
-					newWidth=Util.getPercentOfScreenWidth(80);
+					newWidth=Util.getPercentOfScreenWidth(60);
 					break;
 				case 4:
 					newHeight=oldHeight+Util.getPercentOfScreenHeight(9);
-					newWidth=Util.getPercentOfScreenWidth(80);
+					newWidth=Util.getPercentOfScreenWidth(85);
 					break;
 			}
 		}	
@@ -406,9 +448,44 @@ public class Level {
 	    if (rightBlockIndex== maxBlocks)
 	    	rightBlockIndex = 0;
 		    
+	    
+	    
 		BlockCounter++;
 		
-		
+		// 可以放置的金币数
+		int coinIndex = (int) (newWidth / obstacleCoinWidth);
+		for(int i = 0; i < coinIndex; i++) {
+			// 产生金币概率: 70%
+			if(randomGenerator.nextInt(100) < 70) {
+			    // compute a fraction of the range, 0 <= frac < range
+				/*
+			    long fraction = (long)(blockData[rightBlockIndex].mWidth * 0.33 * randomGenerator.nextDouble());
+				*/
+			    Obstacle newCoinObstacle = obstacleDataCoin[leftCoinIndex];
+			    
+			    newCoinObstacle.didTrigger = false;
+				
+			    float obstacleLeft =  newLeft;
+			    	//blockData[rightBlockIndex].x + blockData[rightBlockIndex].mWidth
+	    			//- newCoinObstacle.width - fraction; 
+			    
+			    newCoinObstacle.x = obstacleLeft + i * obstacleCoinWidth;
+			    newCoinObstacle.y = newHeight;//blockData[rightBlockIndex].mHeight;
+			    newCoinObstacle.setObstacleRect(
+			    		newCoinObstacle.x,
+			    		newCoinObstacle.x + obstacleCoinWidth,
+			    		newHeight + obstacleCoinHeight,
+			    		newHeight);
+				
+			    leftCoinIndex++;
+			    if (leftCoinIndex == maxObstaclesCoin)
+			    	leftCoinIndex = 0;
+			    
+			    rightCoinIndex++;
+			    if (rightCoinIndex == maxObstaclesCoin)
+			    	rightCoinIndex = 0;
+			}
+		}
 
 		//Log.d("debug", "left appendBlockToEnd");
 	}
@@ -436,6 +513,7 @@ public class Level {
 			obstacleDataSlower[i].x = -1000;
 			obstacleDataSlower[i].didTrigger = false;
 		}
+		
 		for(int i = 0; i < maxObstaclesBonus; i++)
 		{
 			if (firstTime)
