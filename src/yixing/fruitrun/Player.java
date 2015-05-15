@@ -46,7 +46,7 @@ public class Player{
 	
 	public Player(Context context, OpenGLRenderer glrenderer, int ScreenHeight) {
 		x = Util.getPercentOfScreenWidth(9); //70; 
-		y = Settings.FirstBlockHeight+Util.getPercentOfScreenHeight(4);
+		y = Settings.FirstBlockHeight + Util.getPercentOfScreenHeight(4);
 		
 		width = (float) (Util.getPercentOfScreenWidth(7) / 1.5); //40; dicker //40; nyan cat //60; nyan cat pre minimalize //62; playersprite settings
 		height = (float) (width * Util.mWidthHeightRatio * 1.7); //40; dicker //30;  nyan cat //42; nyan cat pre minimalize //63; playersprite settings
@@ -104,7 +104,7 @@ public class Player{
 	public void fly() {
 		isFlying = true;
 		flyTime = INITAL_FLYING_TIME;
-		y = Util.getPercentOfScreenHeight(78);
+		y = Util.getPercentOfScreenHeight(80);
 		playerSprite.updatePosition(x, y);
 		this.updatePlayerRect();
 		this.switchCharacter(ROCKET_CHARACTER);
@@ -112,7 +112,7 @@ public class Player{
 	
 	public boolean update() {
 		playerSprite.tryToSetNextFrame();
-		
+		playerSprite.updatePosition(x, y);
 		if(isFlying) {
 			flyTime--;
 			// end of flight
@@ -122,7 +122,6 @@ public class Player{
 			return true;
 		}
 		
-		playerSprite.updatePosition(x, y);
 		if(jumpingsoundplayed==false){
 			SoundManager.playSound(3, 1);
 			jumpingsoundplayed = true;
@@ -258,6 +257,7 @@ public class Player{
 				Level.obstacleDataBonus[i].bonusScoreEffect.doBonusScoreEffect=true;
 				bonusItems++;
 				Level.obstacleDataBonus[i].z= -1;
+				// ride rocket
 				this.fly();
 			}
 		}

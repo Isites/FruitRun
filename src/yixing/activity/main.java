@@ -912,11 +912,7 @@ public class main extends Activity {
 						}
 					}
 					else {
-						if(isPause == false) {
-							//player.fly();
-							//level.rocketRide();
 							player.setJump(true);
-						}
 					}
 				}
 			}
