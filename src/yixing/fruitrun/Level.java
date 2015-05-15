@@ -47,7 +47,7 @@ public class Level {
 	public static Obstacle[] obstacleDataCoin;
 	// 暂定40
 	//dd
-	public static final int maxObstaclesCoin = 40;
+	public static final int maxObstaclesCoin = 100;
 	private int leftCoinIndex;
 	private int rightCoinIndex;
 	
