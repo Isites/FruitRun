@@ -95,7 +95,6 @@ public class Level {
 	private boolean lastBlockWasSmall = false;
 	private int minBlockWidth = 0;
 
-
 	private RHDrawable mWaves = null;
 	
 	public Level(Context context, OpenGLRenderer glrenderer, int _width, int _heigth) {
@@ -215,6 +214,7 @@ public class Level {
 				if (BlockCounter > 15)
 					decideIfAndWhatObstaclesSpawn();
 			}
+			
 			
 			baseSpeedAcceleration = baseSpeed * 0.005f;
 			extraSpeedAcceleration = extraSpeed * 0.002f;
@@ -653,6 +653,11 @@ public class Level {
 			extraSpeedMax = extraSpeedMaxStart;
 			BlockCounter=0;
 		}
+	}
+	
+	public void rocketRide() {
+		baseSpeed = baseSpeedMax;
+		extraSpeed = extraSpeedMax;
 	}
 }
 

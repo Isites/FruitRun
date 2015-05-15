@@ -97,6 +97,10 @@ public class Player{
 		flyTime = INITAL_FLYING_TIME;
 		y = y + Util.getPercentOfScreenHeight(45);
 		playerSprite.updatePosition(x, y);
+		playerRect.left =(int)x;
+		playerRect.top =(int)(y+height);
+		playerRect.right =(int)(x+width);
+		playerRect.bottom =(int)y;
 	}
 	
 	public boolean update() {
