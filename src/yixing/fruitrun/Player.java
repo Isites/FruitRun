@@ -41,7 +41,7 @@ public class Player{
 	private float bonusVelocityDownfallSpeed = 0;
 	
 	public int bonusItems = 0;
-	private int bonusScorePerItem = 200;
+	private int bonusScorePerItem = 1;
 	
 	public Player(Context context, OpenGLRenderer glrenderer, int ScreenHeight) {
 		x = Util.getPercentOfScreenWidth(9); //70; 
@@ -240,6 +240,29 @@ public class Player{
 			}
 		}
 		
+		for(int i = 0; i < Level.maxObstaclesCoin; i++)
+		{
+			ObstacleRect.left =  (int)Level.obstacleDataCoin[i].x;
+			ObstacleRect.top = (int)Level.obstacleDataCoin[i].y+(int)Level.obstacleDataCoin[i].height; 
+			ObstacleRect.right = (int)Level.obstacleDataCoin[i].x+(int)Level.obstacleDataCoin[i].width;
+			ObstacleRect.bottom = (int)Level.obstacleDataCoin[i].y;
+
+			if( checkIntersect(playerRect, ObstacleRect) && !Level.obstacleDataCoin[i].didTrigger)
+			{
+				Level.obstacleDataCoin[i].didTrigger=true;
+				
+				
+				bonusItems++;
+				/*
+				if(!slowSoundplayed){    
+					SoundManager.playSound(5, 1);
+					slowSoundplayed=true;
+				}
+				*/
+				Level.obstacleDataCoin[i].z= -1;
+			}
+		}
+		
 		for(int i = 0; i < Level.maxObstaclesBonus; i++)
 		{
 			ObstacleRect.left =  (int)Level.obstacleDataBonus[i].x;
@@ -253,8 +276,8 @@ public class Player{
 				Level.obstacleDataBonus[i].didTrigger=true;
 				Level.obstacleDataBonus[i].bonusScoreEffect.effectX = Level.obstacleDataBonus[i].x;
 				Level.obstacleDataBonus[i].bonusScoreEffect.effectY = Level.obstacleDataBonus[i].y;
-				Level.obstacleDataBonus[i].bonusScoreEffect.doBonusScoreEffect=true;
-				bonusItems++;
+				//Level.obstacleDataBonus[i].bonusScoreEffect.doBonusScoreEffect=true;
+				//bonusItems++;
 				Level.obstacleDataBonus[i].z= -1;
 				// ride rocket
 				this.fly();

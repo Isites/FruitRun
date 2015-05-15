@@ -47,7 +47,7 @@ public class Level {
 	public static Obstacle[] obstacleDataCoin;
 	// 暂定40
 	//dd
-	public static final int maxObstaclesCoin = 100;
+	public static final int maxObstaclesCoin = 90;
 	private int leftCoinIndex;
 	private int rightCoinIndex;
 	
@@ -225,8 +225,6 @@ public class Level {
 			if (0 > blockData[leftBlockIndex].BlockRect.right) {
 				appendBlockToEnd(-1);
 
-				if(BlockCounter == 5)
-					appendObstaclesToEnd(false, false, true);
 				if(BlockCounter == 7)
 					appendObstaclesToEnd(true, false, false);
 				if(BlockCounter == 9)
