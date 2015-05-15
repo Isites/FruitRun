@@ -13,8 +13,11 @@ import yixing.fruitrun.Settings;
 import yixing.fruitrun.SoundManager;
 import yixing.fruitrun.Util;
 import yixing.highscore.HighscoreAdapter;
+import yixing.util.ShareSimpleData;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -23,20 +26,27 @@ import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.os.PowerManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.alarmclocksnoozers.runnershigh.R;
 
 public class main extends Activity {
 		PowerManager.WakeLock wakeLock ;
+		
+		private ShareSimpleData share;
+		private final String FLY_TAG = "fly";
+		private final String RESURRECTION_TAG = "resurrection";
 		
 		private static long lastCreationTime = 0;
 		private static final int MIN_CREATION_TIMEOUT = 10000;
@@ -55,6 +65,7 @@ public class main extends Activity {
 	    	super.onCreate(savedInstanceState);
 
 	    	//setContentView(R.layout.main);	 
+	    	share = new ShareSimpleData(this);
 	    	
 	    	PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
 			wakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "tag");
@@ -916,25 +927,42 @@ public class main extends Activity {
 					if(resurrectionButton.getShowButton()) {
 						if(resurrectionButton.isClicked(event.getX(), 
 								Util.getInstance().toScreenY((int)event.getY()))) {
-							isResurrection = true;
-							doUpdateCounter=true;
-							player.fly();
-							
-							saveButton.setShowButton(false);
-							saveButton.z = -1.0f;
-							
-							resurrectionButton.setShowButton(false);
-							resurrectionButton.z = -1.0f;
-							
-							resetButton.setShowButton(false);
-							resetButton.z = -1.0f;
+							if(share.getInt(RESURRECTION_TAG) == 0){
+								popUserSetWindow();
+								if(isPause == false)
+									isPause = true;
+							}else{
+								isResurrection = true;
+								doUpdateCounter=true;
+								player.fly();
+								
+								saveButton.setShowButton(false);
+								saveButton.z = -1.0f;
+								
+								resurrectionButton.setShowButton(false);
+								resurrectionButton.z = -1.0f;
+								
+								resetButton.setShowButton(false);
+								resetButton.z = -1.0f;
+								
+								int number = share.getInt(RESURRECTION_TAG);
+								share.putInt(FLY_TAG, number--);
+							}
 						}
 					}
 					if(flyButton.getShowButton()) {
 						if(flyButton.isClicked(event.getX(), 
 								Util.getInstance().toScreenY((int)event.getY()))) {
-							if(doUpdateCounter && !resurrectionButton.getShowButton())
+							if(share.getInt(FLY_TAG) == 0){
+								popUserSetWindow();
+								if(isPause == false)
+									isPause = true;
+							}else
+							if(doUpdateCounter && !resurrectionButton.getShowButton()){
 								player.fly();
+								int number = share.getInt(FLY_TAG);
+								share.putInt(FLY_TAG, number--);
+							}
 						}
 					}
 					if(pauseButton.getShowButton()) {
@@ -1000,6 +1028,57 @@ public class main extends Activity {
 			}
 			
 			return true;
+		}
+	
+	
+		EditText flyEdit, resurrectionEdit;
+		private void popUserSetWindow(){
+			final Context contxt = main.this;
+			
+			final AlertDialog.Builder builder = new AlertDialog.Builder(contxt);
+			LayoutInflater inflater =
+					(LayoutInflater) contxt.getSystemService(LAYOUT_INFLATER_SERVICE);
+			final View layout = inflater.inflate(R.layout.dialog_buy_items,
+					(ViewGroup) findViewById(R.id.dialog_buy_root));
+	
+			flyEdit = (EditText) layout.findViewById(R.id.fly);
+			resurrectionEdit = (EditText) layout.findViewById(R.id.resurrection);
+			
+			builder.setView(layout);
+			
+			builder.setTitle("输入购买道具的数量");
+		
+			builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+	
+				public void onClick(DialogInterface dialog, int which) {
+	
+					if(flyEdit.length() == 0 || resurrectionEdit.length() == 0){
+						Toast.makeText(getApplicationContext(), 
+								"请输入道具数量！", Toast.LENGTH_SHORT).show();
+						if(isPause = true)
+							isPause = false;
+					}else{
+						int flyNumber = Integer.parseInt(
+								flyEdit.getText().toString());
+						int resurrectionNumber = Integer.parseInt(
+								resurrectionEdit.getText().toString());
+						
+						//调用支付
+					}
+				}
+			});
+			
+			builder.setNegativeButton("返回", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					if(isPause == true)
+						isPause = false;
+				}
+			});
+			
+			final AlertDialog dialogs = builder.create();
+	
+			dialogs.show();
+			dialogs.setCanceledOnTouchOutside(false);
 		}
 	}
 }
