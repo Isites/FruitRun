@@ -36,8 +36,6 @@ public class ObstacleBonus extends Obstacle {
 		bonusScoreEffect = new BonusScoreEffect(x-bonusScoreEffectWidth/2, y-bonusScoreEffectHeight/2, 0.85f, bonusScoreEffectWidth, bonusScoreEffectHeight);
 		bonusScoreEffect.loadBitmap(bonusScoreEffectImg);
 		Util.getAppRenderer().addMesh(bonusScoreEffect);
-		
-		
 	}
 	
 

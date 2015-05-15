@@ -11,7 +11,7 @@ public class ObstacleJump extends Obstacle {
 		super(_x, _y, _z, _width, _height, type);
 		
 		jumpSprite = new Sprite(_x, _y, _z, _width, _height, _FrameUpdateTime, _numberOfFrames);
-		jumpSprite.loadBitmap(Util.loadBitmapFromAssets("game_obstacle_jump_animated.png") );
+		jumpSprite.loadBitmap(Util.loadBitmapFromAssets("game_obstacle_jump.png") );
 
 		Util.getAppRenderer().addMesh(jumpSprite);
 		

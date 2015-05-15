@@ -69,9 +69,9 @@ public class Level {
 	private final int OBSTACLEMASK_2_SLOW = 30;
 	private final int OBSTACLEMASK_3_JUMP_SLOW = 20;
 	private final int OBSTACLEMASK_4_BONUS = 40;
-	private final int OBSTACLEMASK_5_JUMP_BONUS = 20;
-	private final int OBSTACLEMASK_6_SLOW_BONUS = 20;
-	private final int OBSTACLEMASK_7_JUMP_SLOW_BONUS = 10;
+	private final int OBSTACLEMASK_5_JUMP_BONUS = 10;
+	private final int OBSTACLEMASK_6_SLOW_BONUS = 10;
+	private final int OBSTACLEMASK_7_JUMP_SLOW_BONUS = 5;
 	
 	private final int OBSTACLEMASK_MAX =
 		OBSTACLEMASK_0_NO_OBSTACLE + 
@@ -419,7 +419,7 @@ public class Level {
 		{
 			if (firstTime)
 			{
-				obstacleDataJumper[i] = new ObstacleJump(-1000, 0, 0.9f, obstacleJumperWidth, obstacleJumperHeight, 'j', 60, 4);
+				obstacleDataJumper[i] = new ObstacleJump(-1000, 0, 0.9f, obstacleJumperWidth, obstacleJumperHeight, 'j', 60, 1);
 			}
 			obstacleDataJumper[i].x = obstacleDataJumper[i].jumpSprite.x = -1000;
 			obstacleDataJumper[i].didTrigger = false;

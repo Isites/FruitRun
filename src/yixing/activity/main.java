@@ -23,6 +23,8 @@ import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.PowerManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -198,7 +200,8 @@ public class main extends Activity {
 		private boolean nineKwasplayed = false;
 		private boolean gameIsLoading = true;
 		
-		
+		private boolean isFirstResured = false;
+		private boolean isResurrection = false;
 		private boolean isPause = false;
 		
 
@@ -686,21 +689,45 @@ public class main extends Activity {
 						
 				} else {
 					if(player.y < 0){
-						doUpdateCounter=false;
-						resetButton.setShowButton(true);
-						resetButton.z = 1.0f;
-						saveButton.setShowButton(true);
-						saveButton.z = 1.0f;
-
-						if(!deathSoundPlayed){
-							SoundManager.playSound(7, 1, 0.5f, 0.5f, 0);
-							deathSoundPlayed=true;
+						if(!isFirstResured){
+							resurrectionButton.setShowButton(true);
+							resurrectionButton.z = 1.0f;
 							
-							System.gc(); //do garbage collection
-						}
-						if(Settings.showHighscoreMarks){
-							if (totalScore > mHighscore1)
-								mNewHighscore.z = 1.0f;
+							isFirstResured = true;
+
+							doUpdateCounter=false;
+							resetButton.setShowButton(true);
+							resetButton.z = 1.0f;
+							saveButton.setShowButton(true);
+							saveButton.z = 1.0f;
+
+							if(!deathSoundPlayed){
+								SoundManager.playSound(7, 1, 0.5f, 0.5f, 0);
+								deathSoundPlayed=true;
+									
+								System.gc(); //do garbage collection
+							}
+							if(Settings.showHighscoreMarks){
+								if (totalScore > mHighscore1)
+									mNewHighscore.z = 1.0f;
+							}
+						}else{
+							doUpdateCounter=false;
+							resetButton.setShowButton(true);
+							resetButton.z = 1.0f;
+							saveButton.setShowButton(true);
+							saveButton.z = 1.0f;
+
+								if(!deathSoundPlayed){
+									SoundManager.playSound(7, 1, 0.5f, 0.5f, 0);
+									deathSoundPlayed=true;
+								
+									System.gc(); //do garbage collection
+								}
+								if(Settings.showHighscoreMarks){
+									if (totalScore > mHighscore1)
+										mNewHighscore.z = 1.0f;
+								}
 						}
 					}
 				}
@@ -742,7 +769,7 @@ public class main extends Activity {
 				
 				if(Settings.RHDEBUG) {
 					currentTimeTaken = System.currentTimeMillis()- starttime;
-					Log.d("runtime", "time after thread sleep : " + Integer.toString((int)currentTimeTaken));
+					Log.d("runtime", "time after saveButtonthread sleep : " + Integer.toString((int)currentTimeTaken));
 				}
 				
 				timeForOneCycle= System.currentTimeMillis()- starttime;
@@ -762,8 +789,6 @@ public class main extends Activity {
 				Log.d("debug", "run method ended");
 			
 		}
-		
-		
 		
 		private void initHighscoreMarks()
 		{
@@ -888,10 +913,27 @@ public class main extends Activity {
 					player.setJump(false);
 				
 				else if(event.getAction() == MotionEvent.ACTION_DOWN){
+					if(resurrectionButton.getShowButton()) {
+						if(resurrectionButton.isClicked(event.getX(), 
+								Util.getInstance().toScreenY((int)event.getY()))) {
+							isResurrection = true;
+							doUpdateCounter=true;
+							player.fly();
+							
+							saveButton.setShowButton(false);
+							saveButton.z = -1.0f;
+							
+							resurrectionButton.setShowButton(false);
+							resurrectionButton.z = -1.0f;
+							
+							resetButton.setShowButton(false);
+							resetButton.z = -1.0f;
+						}
+					}
 					if(flyButton.getShowButton()) {
 						if(flyButton.isClicked(event.getX(), 
 								Util.getInstance().toScreenY((int)event.getY()))) {
-							if(doUpdateCounter)
+							if(doUpdateCounter && !resurrectionButton.getShowButton())
 								player.fly();
 						}
 					}
@@ -908,10 +950,13 @@ public class main extends Activity {
 					if (resetButton.getShowButton() || saveButton.getShowButton()) {
 						if(resetButton.isClicked( event.getX(), Util.getInstance().toScreenY((int)event.getY()) ) ){
 							isPause = false;
+							isResurrection = false;
 							
 							System.gc(); //do garbage collection
 							player.reset();
 							level.reset();
+							resurrectionButton.setShowButton(false);
+							resurrectionButton.z = -1.0f;
 							resetButton.setShowButton(false);
 							resetButton.z = -2.0f;
 							saveButton.setShowButton(false);
@@ -931,6 +976,8 @@ public class main extends Activity {
 							nineKwasplayed = false;
 							totalScore = 0;
 							Util.roundStartTime = System.currentTimeMillis();
+							
+							isFirstResured = false;
 						}
 						else if(saveButton.isClicked( event.getX(), Util.getInstance().toScreenY((int)event.getY())  ) && !scoreWasSaved){
 							//save score
