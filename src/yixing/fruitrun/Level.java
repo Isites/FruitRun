@@ -47,7 +47,7 @@ public class Level {
 	public static Obstacle[] obstacleDataCoin;
 	// 暂定40
 	//dd
-	public static final int maxObstaclesCoin = 80;
+	public static final int maxObstaclesCoin = 150;
 	private int leftCoinIndex;
 	private int rightCoinIndex;
 	
@@ -67,8 +67,8 @@ public class Level {
 	private float obstacleSlowerWidth;
 	private float obstacleSlowerHeight;
 	
-	private float obstacleCoinWidth;
-	private float obstacleCoinHeight;
+	public static float obstacleCoinWidth;
+	public static float obstacleCoinHeight;
 	
 	private float obstacleBonusWidth;
 	private float obstacleBonusHeight;
@@ -229,7 +229,7 @@ public class Level {
 					appendObstaclesToEnd(true, false, false);
 				if(BlockCounter == 9)
 					appendObstaclesToEnd(false, true, false);
-				if (BlockCounter > 15)
+				if (BlockCounter > 30)
 					decideIfAndWhatObstaclesSpawn();
 			}
 			
@@ -464,15 +464,15 @@ public class Level {
 			    newCoinObstacle.didTrigger = false;
 			    newCoinObstacle.z = 0.9f;
 				
-			    float obstacleLeft =  newLeft;
+			    float obstacleLeft =  newLeft + i * obstacleCoinWidth;
 			    	//blockData[rightBlockIndex].x + blockData[rightBlockIndex].mWidth
 	    			//- newCoinObstacle.width - fraction; 
 			    
-			    newCoinObstacle.x = obstacleLeft + i * obstacleCoinWidth;
+			    newCoinObstacle.x = obstacleLeft;
 			    newCoinObstacle.y = newHeight;//blockData[rightBlockIndex].mHeight;
 			    newCoinObstacle.setObstacleRect(
-			    		newCoinObstacle.x,
-			    		newCoinObstacle.x + obstacleCoinWidth,
+			    		obstacleLeft,
+			    		obstacleLeft + obstacleCoinWidth,
 			    		newHeight + obstacleCoinHeight,
 			    		newHeight);
 				

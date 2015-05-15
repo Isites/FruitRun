@@ -242,15 +242,15 @@ public class Player{
 		
 		for(int i = 0; i < Level.maxObstaclesCoin; i++)
 		{
+			
 			ObstacleRect.left =  (int)Level.obstacleDataCoin[i].x;
-			ObstacleRect.top = (int)Level.obstacleDataCoin[i].y+(int)Level.obstacleDataCoin[i].height; 
-			ObstacleRect.right = (int)Level.obstacleDataCoin[i].x+(int)Level.obstacleDataCoin[i].width;
+			ObstacleRect.top = (int)Level.obstacleDataCoin[i].y+(int)Level.obstacleCoinHeight; 
+			ObstacleRect.right = (int)Level.obstacleDataCoin[i].x+(int)Level.obstacleCoinWidth;
 			ObstacleRect.bottom = (int)Level.obstacleDataCoin[i].y;
 
 			if( checkIntersect(playerRect, ObstacleRect) && !Level.obstacleDataCoin[i].didTrigger)
 			{
 				Level.obstacleDataCoin[i].didTrigger=true;
-				
 				
 				bonusItems++;
 				/*
