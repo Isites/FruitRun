@@ -47,7 +47,7 @@ public class Level {
 	public static Obstacle[] obstacleDataCoin;
 	// 暂定40
 	//dd
-	public static final int maxObstaclesCoin = 90;
+	public static final int maxObstaclesCoin = 80;
 	private int leftCoinIndex;
 	private int rightCoinIndex;
 	
@@ -462,6 +462,7 @@ public class Level {
 			    Obstacle newCoinObstacle = obstacleDataCoin[leftCoinIndex];
 			    
 			    newCoinObstacle.didTrigger = false;
+			    newCoinObstacle.z = 0.9f;
 				
 			    float obstacleLeft =  newLeft;
 			    	//blockData[rightBlockIndex].x + blockData[rightBlockIndex].mWidth
