@@ -104,7 +104,7 @@ public class Player{
 	public void fly() {
 		isFlying = true;
 		flyTime = INITAL_FLYING_TIME;
-		y = y + Util.getPercentOfScreenHeight(45);
+		y = Util.getPercentOfScreenHeight(78);
 		playerSprite.updatePosition(x, y);
 		this.updatePlayerRect();
 		this.switchCharacter(ROCKET_CHARACTER);
@@ -258,6 +258,7 @@ public class Player{
 				Level.obstacleDataBonus[i].bonusScoreEffect.doBonusScoreEffect=true;
 				bonusItems++;
 				Level.obstacleDataBonus[i].z= -1;
+				this.fly();
 			}
 		}
 		slowSoundplayed=false;
@@ -340,7 +341,12 @@ public class Player{
 		playerSprite.loadBitmap(playerSpriteImg);
 		glrenderer.addMesh(playerSprite);
 		*/
+		
+
 	}
 
+	public boolean isFlying() {
+		return isFlying;
+	}
 
 }

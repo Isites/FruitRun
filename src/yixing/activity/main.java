@@ -631,11 +631,13 @@ public class main extends Activity {
 				player.playerSprite.setFrameUpdateTime(frameUpdateTime);
 				//Log.i("speed", "frameUpdateTime: " + frameUpdateTime);
 				// 暂定80
-				if(frameUpdateTime < 80) {
-					player.switchCharacter(Player.NORMAL_CHARACTER);
-				}
-				else {
-					player.switchCharacter(Player.SLOW_CHARACTER);
+				if(!player.isFlying()) {
+					if(frameUpdateTime < 80) {
+						player.switchCharacter(Player.NORMAL_CHARACTER);
+					}
+					else {
+						player.switchCharacter(Player.SLOW_CHARACTER);
+					}
 				}
 				if (player.update()) {
 						if(Settings.RHDEBUG){
@@ -680,7 +682,8 @@ public class main extends Activity {
 				if(player.collidedWithObstacle(level.getLevelPosition()) ){
 					level.lowerSpeed();
 				}
-				
+				if(player.isFlying())
+					level.rocketRide();
 				if(doUpdateCounter)
 				{
 					totalScore = level.getDistanceScore() + player.getBonusScore();
