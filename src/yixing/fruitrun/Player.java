@@ -103,7 +103,7 @@ public class Player{
 	public void fly() {
 		isFlying = true;
 		flyTime = INITAL_FLYING_TIME;
-		y = Util.getPercentOfScreenHeight(80);
+		y = Util.getPercentOfScreenHeight(77);
 		playerSprite.updatePosition(x, y);
 		this.updatePlayerRect();
 		this.switchCharacter(ROCKET_CHARACTER);
