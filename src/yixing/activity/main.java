@@ -630,12 +630,12 @@ public class main extends Activity {
 						60;
 				player.playerSprite.setFrameUpdateTime(frameUpdateTime);
 				//Log.i("speed", "frameUpdateTime: " + frameUpdateTime);
-				// 暂定70
-				if(frameUpdateTime < 90) {
-					player.switchCharacter(Player.NORMAL_CHARACTER, frameUpdateTime);
+				// 暂定80
+				if(frameUpdateTime < 80) {
+					player.switchCharacter(Player.NORMAL_CHARACTER);
 				}
 				else {
-					player.switchCharacter(Player.SLOW_CHARACTER, frameUpdateTime);
+					player.switchCharacter(Player.SLOW_CHARACTER);
 				}
 				if (player.update()) {
 						if(Settings.RHDEBUG){
@@ -733,6 +733,8 @@ public class main extends Activity {
 				Log.d("debug", "run method ended");
 			
 		}
+		
+		
 		
 		private void initHighscoreMarks()
 		{
@@ -908,9 +910,9 @@ public class main extends Activity {
 					}
 					else {
 						if(isPause == false) {
-							player.fly();
-							level.rocketRide();
-							//player.setJump(true);
+							//player.fly();
+							//level.rocketRide();
+							player.setJump(true);
 						}
 					}
 				}

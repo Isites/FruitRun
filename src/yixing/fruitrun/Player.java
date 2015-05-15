@@ -36,6 +36,7 @@ public class Player{
 	private float speedoffsetXStep;
 	private Bitmap playerSpriteImg = null; 
 	public Sprite playerSprite;
+	private Sprite slowSprite, normalSprite, rocketSprite;
 	private boolean fingerOnScreen = false;
 	private float bonusVelocity = 0;
 	private float bonusVelocityDownfallSpeed = 0;
@@ -58,16 +59,24 @@ public class Player{
 		speedoffsetXMax = Util.getPercentOfScreenWidth(7);
 		speedoffsetXStep = Util.getPercentOfScreenWidth(0.002f);
 		
+		playerSpriteImg = Util.loadBitmapFromAssets("game_character_spritesheet_normal.png");
+		normalSprite = new Sprite(x, y, -1.0f, width, height, 25, 6); 
+		normalSprite.loadBitmap(playerSpriteImg);
+		glrenderer.addMesh(normalSprite);
+		
+		playerSpriteImg = Util.loadBitmapFromAssets("game_character_spritesheet_rocket.png");
+		rocketSprite = new Sprite(x, y, -1.0f, width, height, 25, 6); 
+		rocketSprite.loadBitmap(playerSpriteImg);
+		glrenderer.addMesh(rocketSprite);
+		
 		playerSpriteImg = Util.loadBitmapFromAssets("game_character_spritesheet_slow.png");
-		playerSprite = new Sprite(x, y, 0.5f, width, height, 25, 6); 
-		playerSprite.loadBitmap(playerSpriteImg);
-		glrenderer.addMesh(playerSprite);
+		slowSprite = new Sprite(x, y, 0.5f, width, height, 25, 6); 
+		slowSprite.loadBitmap(playerSpriteImg);
+		glrenderer.addMesh(slowSprite);
+		playerSprite = slowSprite;
 		
 		playerRect = new Rect();
-		playerRect.left =(int)x;
-		playerRect.top =(int)(y + height);
-		playerRect.right =(int)(x + width);
-		playerRect.bottom =(int)y;
+		this.updatePlayerRect();
 		
 		ObstacleRect = new Rect();
 	}
@@ -97,10 +106,8 @@ public class Player{
 		flyTime = INITAL_FLYING_TIME;
 		y = y + Util.getPercentOfScreenHeight(45);
 		playerSprite.updatePosition(x, y);
-		playerRect.left =(int)x;
-		playerRect.top =(int)(y+height);
-		playerRect.right =(int)(x+width);
-		playerRect.bottom =(int)y;
+		this.updatePlayerRect();
+		this.switchCharacter(ROCKET_CHARACTER);
 	}
 	
 	public boolean update() {
@@ -155,10 +162,7 @@ public class Player{
 		if (bonusVelocity < 0)
 			bonusVelocity = 0;
 		
-		playerRect.left =(int)x;
-		playerRect.top =(int)(y+height);
-		playerRect.right =(int)(x+width);
-		playerRect.bottom =(int)y;
+		this.updatePlayerRect();
 		
 		onGround = false;
 		
@@ -296,22 +300,38 @@ public class Player{
 		return bonusItems * bonusScorePerItem;
 	}
 	
+	private void updatePlayerRect() {
+		playerRect.left =(int)x;
+		playerRect.top =(int)(y+height);
+		playerRect.right =(int)(x+width);
+		playerRect.bottom =(int)y;
+	}
+	
 	private int currentCharacter = 0;
 	public static int SLOW_CHARACTER = 0;
 	public static int NORMAL_CHARACTER = 1;
 	public static int ROCKET_CHARACTER = 2;
-	public void switchCharacter(int i, float frameUpdateTime) {
+	public void switchCharacter(int i) {
 		if(currentCharacter == i)
 			return;
 		switch(i) {
 		case 0:
-			playerSpriteImg = Util.loadBitmapFromAssets("game_character_spritesheet_slow.png");
+			slowSprite.z = 0.5f;
+			normalSprite.z = -1.0f;
+			rocketSprite.z = -1.0f;
+			playerSprite = slowSprite;
 			break;
 		case 1:
-			playerSpriteImg = Util.loadBitmapFromAssets("game_character_spritesheet_normal.png");
+			slowSprite.z = -1.0f;
+			normalSprite.z = 0.5f;
+			rocketSprite.z = -1.0f;
+			playerSprite = normalSprite;
 			break;
 		case 2:
-			playerSpriteImg = Util.loadBitmapFromAssets("game_character_spritesheet_rocket.png");
+			slowSprite.z = -1.0f;
+			normalSprite.z = -1.0f;
+			rocketSprite.z = 0.5f;
+			playerSprite = rocketSprite;
 			break;
 		}
 		currentCharacter = i;
