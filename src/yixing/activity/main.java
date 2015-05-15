@@ -625,11 +625,18 @@ public class main extends Activity {
 //				if (debugTime + 15000 < starttime) sleep(100); // FIXME DEBUG TIME FOR VIDEO CAPTURE
 
 //				level.update(); // FIXME remove this line
-				
-				player.playerSprite.setFrameUpdateTime(
-						(level.baseSpeedMax+level.extraSpeedMax)*10 - 
+				float frameUpdateTime = (level.baseSpeedMax+level.extraSpeedMax)*10 - 
 						((level.baseSpeed+level.extraSpeed)*10) +
-						60 );
+						60;
+				player.playerSprite.setFrameUpdateTime(frameUpdateTime);
+				//Log.i("speed", "frameUpdateTime: " + frameUpdateTime);
+				// 暂定70
+				if(frameUpdateTime < 90) {
+					player.switchCharacter(Player.NORMAL_CHARACTER, frameUpdateTime);
+				}
+				else {
+					player.switchCharacter(Player.SLOW_CHARACTER, frameUpdateTime);
+				}
 				if (player.update()) {
 						if(Settings.RHDEBUG){
 							currentTimeTaken = System.currentTimeMillis()- starttime;
@@ -899,8 +906,7 @@ public class main extends Activity {
 							scoreWasSaved=true;
 						}
 					}
-					else {
-						player.setJump(true);
+					else {player.setJump(true);
 					}
 				}
 			}

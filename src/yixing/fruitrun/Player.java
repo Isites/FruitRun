@@ -40,7 +40,7 @@ public class Player{
 	public int bonusItems = 0;
 	private int bonusScorePerItem = 200;
 	
-
+	private  OpenGLRenderer glrenderer;
 	public Player(Context context, OpenGLRenderer glrenderer, int ScreenHeight) {
 		x = Util.getPercentOfScreenWidth(9); //70; 
 		y = Settings.FirstBlockHeight+Util.getPercentOfScreenHeight(4);
@@ -56,10 +56,11 @@ public class Player{
 		speedoffsetXMax = Util.getPercentOfScreenWidth(7);
 		speedoffsetXStep = Util.getPercentOfScreenWidth(0.002f);
 		
-		playerSpriteImg = Util.loadBitmapFromAssets("game_normal_character_spritesheet.png");
+		playerSpriteImg = Util.loadBitmapFromAssets("game_character_spritesheet_slow.png");
 		playerSprite = new Sprite(x, y, 0.5f, width, height, 25, 6); 
-		playerSprite.loadBitmap(playerSpriteImg); 
+		playerSprite.loadBitmap(playerSpriteImg);
 		glrenderer.addMesh(playerSprite);
+		this.glrenderer = glrenderer;
 		
 		playerRect = new Rect();
 		playerRect.left =(int)x;
@@ -93,6 +94,7 @@ public class Player{
 	public boolean update() {
 		playerSprite.updatePosition(x, y);
 		playerSprite.tryToSetNextFrame();
+		
 		
 		if(jumpingsoundplayed==false){
 			SoundManager.playSound(3, 1);
@@ -274,6 +276,30 @@ public class Player{
 		return bonusItems * bonusScorePerItem;
 	}
 	
+	private int currentCharacter = 0;
+	public static int SLOW_CHARACTER = 0;
+	public static int NORMAL_CHARACTER = 1;
+	public static int ROCKET_CHARACTER = 2;
+	public void switchCharacter(int i, float frameUpdateTime) {
+		if(currentCharacter == i)
+			return;
+		switch(i) {
+		case 0:
+			playerSpriteImg = Util.loadBitmapFromAssets("game_character_spritesheet_slow.png");
+			break;
+		case 1:
+			playerSpriteImg = Util.loadBitmapFromAssets("game_character_spritesheet_normal.png");
+			break;
+		case 2:
+			playerSpriteImg = Util.loadBitmapFromAssets("game_character_spritesheet_rocket.png");
+			break;
+		}
+		currentCharacter = i;
+		glrenderer.removeMesh(playerSprite);
+		playerSprite = new Sprite(x, y, 0.5f, width, height, (int) frameUpdateTime, 6);
+		playerSprite.loadBitmap(playerSpriteImg);
+		glrenderer.addMesh(playerSprite);
+	}
 
 
 }
