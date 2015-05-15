@@ -27,7 +27,6 @@ import org.json.JSONArray;
 
 import yixing.fruitrun.Settings;
 import yixing.highscore.HighscoreAdapter;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -40,17 +39,16 @@ import android.os.Handler;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.TableRow.LayoutParams;
 
 import com.alarmclocksnoozers.runnershigh.R;
+
 
 public class HighScoreActivity extends Activity {
 	

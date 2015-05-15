@@ -1,13 +1,12 @@
 package yixing.fruitrun;
 
-import android.content.Context;
-
 import java.util.HashMap;
 
-import com.alarmclocksnoozers.runnershigh.R;
-
+import android.content.Context;
 import android.media.AudioManager;
 import android.media.SoundPool;
+
+import com.alarmclocksnoozers.runnershigh.R;
 
 public class SoundManager {
 	 

@@ -9,7 +9,6 @@
 package yixing.activity;
 
 import java.io.IOException;
-import android.view.View.OnKeyListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +22,6 @@ import org.apache.http.message.BasicNameValuePair;
 
 import yixing.fruitrun.Settings;
 import yixing.highscore.HighscoreAdapter;
-
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
@@ -33,6 +31,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.View.OnKeyListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -42,6 +41,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.alarmclocksnoozers.runnershigh.R;
+
 
 public class HighScoreForm extends Activity {
 	

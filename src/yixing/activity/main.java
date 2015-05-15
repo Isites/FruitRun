@@ -153,6 +153,10 @@ public class main extends Activity {
 		private Bitmap saveButtonImg = null;
 		private Button pauseButton = null;
 		private Bitmap pauseButtonImg = null;
+		private Button flyButton = null;
+		private Bitmap flyButtonImg = null;
+		private Button resurrectionButton = null;
+		private Bitmap resurrectionButtonImg = null;
 		private RHDrawable blackRHD = null;
 		private Bitmap blackImg = null;
 		private RHDrawable gameLoadingRHD = null;
@@ -378,7 +382,26 @@ public class main extends Activity {
 			pauseButton.loadBitmap(pauseButtonImg);
 			mRenderer.addMesh(pauseButton);
 			
-
+			resurrectionButtonImg = Util.loadBitmapFromAssets("game_button_save.png");
+			resurrectionButton = new Button(
+					Util.getPercentOfScreenWidth(50),
+					height - Util.getPercentOfScreenHeight(50),
+					-2, 
+					Util.getPercentOfScreenWidth(10),
+					Util.getPercentOfScreenHeight(10));
+			resurrectionButton.loadBitmap(resurrectionButtonImg);
+			mRenderer.addMesh(resurrectionButton);
+			
+			flyButtonImg = Util.loadBitmapFromAssets("game_button_save.png");
+			flyButton = new Button(
+					Util.getPercentOfScreenWidth(10),
+					height - Util.getPercentOfScreenHeight(60),
+					-2, 
+					Util.getPercentOfScreenWidth(10),
+					Util.getPercentOfScreenHeight(10));
+			flyButton.loadBitmap(flyButtonImg);
+			mRenderer.addMesh(flyButton);
+			
 			player = new Player(getApplicationContext(), mRenderer, height);
 			sleep();
 			
@@ -617,6 +640,9 @@ public class main extends Activity {
 			// display pause button
 			pauseButton.setShowButton(true);
 			pauseButton.z = 1.0f;
+			
+			flyButton.setShowButton(true);
+			flyButton.z = 1.0f;
 			
 			while(isRunning) {
 				while(isPause == true);
@@ -862,6 +888,13 @@ public class main extends Activity {
 					player.setJump(false);
 				
 				else if(event.getAction() == MotionEvent.ACTION_DOWN){
+					if(flyButton.getShowButton()) {
+						if(flyButton.isClicked(event.getX(), 
+								Util.getInstance().toScreenY((int)event.getY()))) {
+							if(doUpdateCounter)
+								player.fly();
+						}
+					}
 					if(pauseButton.getShowButton()) {
 						if(pauseButton.isClicked(event.getX(), Util.getInstance().toScreenY((int)event.getY()))) {
 							
@@ -874,6 +907,8 @@ public class main extends Activity {
 					}
 					if (resetButton.getShowButton() || saveButton.getShowButton()) {
 						if(resetButton.isClicked( event.getX(), Util.getInstance().toScreenY((int)event.getY()) ) ){
+							isPause = false;
+							
 							System.gc(); //do garbage collection
 							player.reset();
 							level.reset();
