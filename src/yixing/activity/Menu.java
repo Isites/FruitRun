@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
@@ -87,12 +86,7 @@ public class Menu extends Activity {
     	Intent myIntent = new Intent (this, HighScoreActivity.class);
     	startActivity (myIntent);
     }
-    
-    public void showInfo(View view) {
-    	Intent myIntent = new Intent (this, Info.class);
-    	startActivity (myIntent);
-    }
-    
+
     protected void onActivityResult (int requestCode, int resultCode, Intent data) {
     	if (resultCode == 1) {
     		showDialog(1);
@@ -107,11 +101,6 @@ public class Menu extends Activity {
     		mPlayButton.setClickable(true);
     		mPlayButton.getBackground().clearColorFilter();
     	}
-    }
-    
-    public void donate(View view) {
-    	Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse(Settings.URL_DONATE));
-    	startActivity(browserIntent);
     }
     
     protected Dialog onCreateDialog(int id) {

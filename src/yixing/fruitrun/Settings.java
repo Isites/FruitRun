@@ -36,7 +36,7 @@ public class Settings {
 	public static final boolean showHighscoreMarks = false;
 	
 	//gameplay settings
-	static public float FirstBlockHeight = 50;
+	static public float FirstBlockHeight = 70;
 	
 	public static final int TimeForLoadingScreenToBeVisible = 3500;
 	

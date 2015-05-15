@@ -122,14 +122,14 @@ public class Level {
 		
 		timeUntilNextSpeedIncreaseMillis = Settings.TimeOfFirstSpeedIncrease;
 		
-		obstacleJumperWidth = Util.getPercentOfScreenWidth(4.875f);
-		obstacleJumperHeight = Util.getPercentOfScreenHeight(14.25f);
+		obstacleJumperWidth = Util.getPercentOfScreenWidth(3);
+		obstacleJumperHeight = Util.getPercentOfScreenWidth(3);
 		
-		obstacleSlowerWidth = Util.getPercentOfScreenWidth(6);
-		obstacleSlowerHeight= Util.getPercentOfScreenHeight(6);
+		obstacleSlowerWidth = Util.getPercentOfScreenWidth(5);
+		obstacleSlowerHeight= Util.getPercentOfScreenWidth(4);
 		
 		obstacleBonusWidth = Util.getPercentOfScreenWidth(5);
-		obstacleBonusHeight = obstacleBonusWidth*Util.mWidthHeightRatio;
+		obstacleBonusHeight = obstacleBonusWidth/2;
 		obstacleBonusDistanceToBlock = Util.getPercentOfScreenHeight(12);
 		
 		

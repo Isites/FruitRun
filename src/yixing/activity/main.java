@@ -170,6 +170,10 @@ public class main extends Activity {
 		private Bitmap flyButtonImg = null;
 		private Button resurrectionButton = null;
 		private Bitmap resurrectionButtonImg = null;
+		private Button soundOnButton = null;
+		private Bitmap soundOnButtonImg = null;
+		private Button soundOffButton = null;
+		private Bitmap soundOffButtonImg = null;
 		private RHDrawable blackRHD = null;
 		private Bitmap blackImg = null;
 		private RHDrawable gameLoadingRHD = null;
@@ -369,10 +373,10 @@ public class main extends Activity {
 			resetButtonImg = Util.loadBitmapFromAssets("game_button_play_again.png");
 			resetButton = new Button(
 					Util.getPercentOfScreenWidth(85), 
-					height-Util.getPercentOfScreenHeight(75),
+					height-Util.getPercentOfScreenHeight(60),
 					-2, 
-					Util.getPercentOfScreenWidth(13), 
-					Util.getPercentOfScreenWidth(13));
+					Util.getPercentOfScreenWidth(10), 
+					Util.getPercentOfScreenWidth(10));
 			resetButton.loadBitmap(resetButtonImg);
 			mRenderer.addMesh(resetButton);			
 			
@@ -386,35 +390,55 @@ public class main extends Activity {
 			saveButton.loadBitmap(saveButtonImg);
 			mRenderer.addMesh(saveButton);
 			
-			pauseButtonImg =Util.loadBitmapFromAssets("game_button_save.png");
+			pauseButtonImg =Util.loadBitmapFromAssets("game_button_pause.png");
 			pauseButton = new Button(
-					Util.getPercentOfScreenWidth(72), 
-					height-Util.getPercentOfScreenHeight(18),
+					Util.getPercentOfScreenWidth(85), 
+					height-Util.getPercentOfScreenHeight(60),
 					-2, 
 					Util.getPercentOfScreenWidth(10),
-					Util.getPercentOfScreenHeight(10));
+					Util.getPercentOfScreenWidth(10));
 			pauseButton.loadBitmap(pauseButtonImg);
 			mRenderer.addMesh(pauseButton);
 			
-			resurrectionButtonImg = Util.loadBitmapFromAssets("game_button_save.png");
+			resurrectionButtonImg = Util.loadBitmapFromAssets("game_button_resurrection.png");
 			resurrectionButton = new Button(
-					Util.getPercentOfScreenWidth(50),
+					Util.getPercentOfScreenWidth(5),
 					height - Util.getPercentOfScreenHeight(50),
 					-2, 
-					Util.getPercentOfScreenWidth(10),
-					Util.getPercentOfScreenHeight(10));
+					Util.getPercentOfScreenWidth(6),
+					Util.getPercentOfScreenWidth(6));
 			resurrectionButton.loadBitmap(resurrectionButtonImg);
 			mRenderer.addMesh(resurrectionButton);
 			
-			flyButtonImg = Util.loadBitmapFromAssets("game_button_save.png");
+			flyButtonImg = Util.loadBitmapFromAssets("game_button_fly.png");
 			flyButton = new Button(
-					Util.getPercentOfScreenWidth(10),
-					height - Util.getPercentOfScreenHeight(60),
+					Util.getPercentOfScreenWidth(5),
+					height - Util.getPercentOfScreenHeight(35),
 					-2, 
-					Util.getPercentOfScreenWidth(10),
-					Util.getPercentOfScreenHeight(10));
+					Util.getPercentOfScreenWidth(6),
+					Util.getPercentOfScreenWidth(6));
 			flyButton.loadBitmap(flyButtonImg);
 			mRenderer.addMesh(flyButton);
+			
+			soundOnButtonImg = Util.loadBitmapFromAssets("game_sound_on.png");
+			soundOnButton = new Button(
+					Util.getPercentOfScreenWidth(90),
+					height - Util.getPercentOfScreenHeight(18),
+					-2, 
+					Util.getPercentOfScreenWidth(6),
+					Util.getPercentOfScreenWidth(6));
+			soundOnButton.loadBitmap(soundOnButtonImg);
+			mRenderer.addMesh(soundOnButton);
+			
+			soundOffButtonImg = Util.loadBitmapFromAssets("game_sound_off.png");
+			soundOffButton = new Button(
+					Util.getPercentOfScreenWidth(90),
+					height - Util.getPercentOfScreenHeight(18),
+					-2, 
+					Util.getPercentOfScreenWidth(6),
+					Util.getPercentOfScreenWidth(6));
+			soundOffButton.loadBitmap(soundOffButtonImg);
+			mRenderer.addMesh(soundOffButton);
 			
 			player = new Player(getApplicationContext(), mRenderer, height);
 			sleep();
@@ -523,7 +547,6 @@ public class main extends Activity {
 			mRenderer.addMesh(blackRHD);
 			
 			gameLoadingRHD.z = -1.0f;
-			
 			
 			mHighscoreMarkBitmap = Util.loadBitmapFromAssets("game_highscoremark.png");
 			 
@@ -658,6 +681,9 @@ public class main extends Activity {
 			flyButton.setShowButton(true);
 			flyButton.z = 1.0f;
 			
+			soundOnButton.setShowButton(true);
+			soundOnButton.z = 1.0f;
+			
 			while(isRunning) {
 				while(isPause == true);
 				starttime = System.currentTimeMillis();
@@ -707,6 +733,8 @@ public class main extends Activity {
 							isFirstResured = true;
 
 							doUpdateCounter=false;
+							pauseButton.setShowButton(false);
+							pauseButton.z = -1.0f;
 							resetButton.setShowButton(true);
 							resetButton.z = 1.0f;
 							saveButton.setShowButton(true);
@@ -917,13 +945,38 @@ public class main extends Activity {
 
 		}
 		
-
+		boolean isSound = false;
 		public boolean onTouchEvent(MotionEvent event) {
 			if(!gameIsLoading){
 				if(event.getAction() == MotionEvent.ACTION_UP)
 					player.setJump(false);
 				
 				else if(event.getAction() == MotionEvent.ACTION_DOWN){
+					if(soundOnButton.getShowButton()) {
+						if(soundOnButton.isClicked(event.getX(), Util.getInstance().toScreenY((int)event.getY()))) {
+							soundOnButton.setShowButton(false);
+							soundOnButton.z = -1f;
+							
+							soundOffButton.setShowButton(true);
+							soundOffButton.z = 1f;
+							
+							musicPlayerLoop.pause();
+							isSound = true;
+						}
+					}else
+					if(soundOffButton.getShowButton()) {
+						if(soundOffButton.isClicked(event.getX(), Util.getInstance().toScreenY((int)event.getY()))) {
+							soundOnButton.setShowButton(true);
+							soundOnButton.z = 1f;
+							
+							soundOffButton.setShowButton(false);
+							soundOffButton.z = -1f;
+							
+							musicPlayerLoop.start();
+							isSound = true;
+						}
+					}
+					
 					if(resurrectionButton.getShowButton()) {
 						if(resurrectionButton.isClicked(event.getX(), 
 								Util.getInstance().toScreenY((int)event.getY()))) {
@@ -975,6 +1028,7 @@ public class main extends Activity {
 							//player.reset();
 						}
 					}
+					
 					if (resetButton.getShowButton() || saveButton.getShowButton()) {
 						if(resetButton.isClicked( event.getX(), Util.getInstance().toScreenY((int)event.getY()) ) ){
 							isPause = false;
@@ -983,6 +1037,8 @@ public class main extends Activity {
 							System.gc(); //do garbage collection
 							player.reset();
 							level.reset();
+							pauseButton.setShowButton(true);
+							pauseButton.z = 1.0f;
 							resurrectionButton.setShowButton(false);
 							resurrectionButton.z = -1.0f;
 							resetButton.setShowButton(false);
@@ -1022,7 +1078,11 @@ public class main extends Activity {
 						}
 					}
 					else {
+						if(!isSound){
 							player.setJump(true);
+						}else{
+							isSound = false;
+						}
 					}
 				}
 			}

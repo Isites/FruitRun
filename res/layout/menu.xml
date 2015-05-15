@@ -11,14 +11,8 @@
 		android:layout_width="fill_parent"
         android:layout_height="fill_parent" 
         android:layout_weight="2" 
-        android:layout_marginBottom="10dp" 
-        android:layout_marginLeft="10dp">
-        
-	    <View
-		    android:layout_width="fill_parent"
-		    android:layout_height="fill_parent"
-		    android:layout_weight="2"
-		    android:scaleType="fitCenter"/>
+        android:layout_marginTop="50dp" 
+        android:layout_marginLeft="30dp">
 			
 			<Button android:id="@+id/startButton" 
 				android:layout_width="fill_parent"
@@ -35,14 +29,20 @@
 				android:background="@drawable/menu_button_highscore"
 				android:onClick="showScore"
 				android:layout_margin="5dp"/>	
-		
-			<Button android:id="@+id/infoButton" 
-				android:layout_width="fill_parent" 
-				android:layout_height="fill_parent"
-				android:layout_weight="3" 
-				android:background="@drawable/menu_button_information"
-				android:onClick="showInfo"
-				android:layout_margin="5dp"/>
+				
+			<Button android:id="@+id/scoreButton"
+			    android:visibility="invisible"
+				android:layout_width="fill_parent"
+        		android:layout_height="fill_parent"
+				android:layout_weight="3"
+				android:background="@drawable/menu_button_highscore"
+				android:layout_margin="5dp"/>	
+
+			 <View
+		    	android:layout_width="fill_parent"
+		    	android:layout_height="fill_parent"
+		    	android:layout_weight="2"
+		    	android:scaleType="fitCenter"/>
 	</LinearLayout>
 
 	<LinearLayout

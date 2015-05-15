@@ -1,10 +1,3 @@
-/*
- * HighscoreActivity
- * runnersHigh 1.0
- * 
- * _DESCRIPTION:
- * 	Highscore Activity itself - shows highscores of user 
- */
 
 package yixing.activity;
 
@@ -12,18 +5,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
 
 import yixing.fruitrun.Settings;
 import yixing.highscore.HighscoreAdapter;
@@ -48,7 +36,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alarmclocksnoozers.runnershigh.R;
-
 
 public class HighScoreActivity extends Activity {
 	
@@ -77,38 +64,6 @@ public class HighScoreActivity extends Activity {
         
         final Handler handler = new Handler();
 
-        findViewById(R.id.buttonLocalHighscore).setOnClickListener(new OnClickListener() {
-			
-			public void onClick(View v) {
-
-				Toast.makeText(context, R.string.hs_loading_local, Toast.LENGTH_SHORT).show();
-				
-				handler.postDelayed(new Runnable() {
-					
-					public void run() {
-						showLocalScore();
-					}
-				}, 500);
-			}
-		});
-        
-
-        findViewById(R.id.buttonOnlineHighscore).setOnClickListener(new OnClickListener() {
-			
-			public void onClick(View v) {
-
-				Toast.makeText(context, R.string.hs_loading_online, Toast.LENGTH_SHORT).show();
-				
-				handler.postDelayed(new Runnable() {
-					
-					public void run() {
-						showOnlineScore();
-					}
-				}, 500);
-			}
-		});
-        
-        
         Toast.makeText(context, R.string.hs_loading_local, Toast.LENGTH_SHORT).show();
 		
 		handler.postDelayed(new Runnable() {
@@ -213,7 +168,7 @@ public class HighScoreActivity extends Activity {
         		paramsOfAdditional.gravity = Gravity.CENTER_VERTICAL | Gravity.RIGHT;
         		additional.setLayoutParams(paramsOfAdditional);
     		}
-    		
+    		additional.setVisibility(View.GONE);
     		generateLine(placeString, scoreString, nameString, additional);
     		
     	} while(c.moveToNext());
@@ -221,55 +176,7 @@ public class HighScoreActivity extends Activity {
     	
     	
     }
-    
-    private void showOnlineScore() {
-    	
-    	
-    	
-    	if(!isOnline()) {
-    		Toast.makeText(this, R.string.hs_error_no_internet, Toast.LENGTH_SHORT).show();
-    	} else {
-
-        	highscoreTable.removeAllViews();
-        	
-	    	try {
-	    		HttpClient client = new DefaultHttpClient();  
-	    		String getURL = GET_HIGHSCORE_URL + "?size=" + Integer.toString(Settings.onlineHighscoreLimit);
-	    		HttpGet get = new HttpGet(getURL);
-	    		// query data from server
-	    		HttpResponse responseGet = client.execute(get); 
-	    		HttpEntity resEntityGet = responseGet.getEntity();  
-	    		if (resEntityGet != null) {
-	    			JSONArray jArray = new JSONArray(EntityUtils.toString(resEntityGet));
-	    			
-					String nameString;
-					String scoreString;
-					String timeStamp;
-					
-	    			for(int i = 0; i < jArray.length(); i++) {
-	    				nameString = jArray.getJSONObject(i).getString("name");
-	    				scoreString = jArray.getJSONObject(i).getString("score");
-	    				timeStamp = jArray.getJSONObject(i).getString("created_at");
-	    				
-	    				View additional = new TextView(this, null, android.R.attr.textAppearanceSmallInverse);
-	        			((TextView)additional).setText(timeStamp);
-
-	            		LayoutParams paramsOfAdditional = new LayoutParams(0, LayoutParams.WRAP_CONTENT, 3.0f);
-	            		paramsOfAdditional.gravity = Gravity.CENTER_VERTICAL | Gravity.RIGHT;
-	            		additional.setLayoutParams(paramsOfAdditional);
-	            		
-	            		generateLine(""+(i+1), scoreString, nameString, additional);
-	    			}             
-	    		}
-
-	    	} catch (Exception e) {
-	    		e.printStackTrace();
-	    	}
-    	}
-
-    }
-    
-    
+   
     private void generateLine(String placeString, String scoreString, String nameString, View additional) {
     	
     	TextView place = new TextView(this, null, android.R.attr.textAppearanceLargeInverse);
