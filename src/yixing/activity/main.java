@@ -350,11 +350,11 @@ public class main extends Activity {
 			
 			resetButtonImg = Util.loadBitmapFromAssets("game_button_play_again.png");
 			resetButton = new Button(
-					Util.getPercentOfScreenWidth(72), 
-					height-Util.getPercentOfScreenHeight(18),
+					Util.getPercentOfScreenWidth(85), 
+					height-Util.getPercentOfScreenHeight(75),
 					-2, 
-					Util.getPercentOfScreenWidth(26), 
-					Util.getPercentOfScreenHeight(13));
+					Util.getPercentOfScreenWidth(13), 
+					Util.getPercentOfScreenWidth(13));
 			resetButton.loadBitmap(resetButtonImg);
 			mRenderer.addMesh(resetButton);			
 			
@@ -370,8 +370,8 @@ public class main extends Activity {
 			
 			pauseButtonImg =Util.loadBitmapFromAssets("game_button_save.png");
 			pauseButton = new Button(
-					Util.getPercentOfScreenWidth(90), 
-					height-Util.getPercentOfScreenHeight(90),
+					Util.getPercentOfScreenWidth(72), 
+					height-Util.getPercentOfScreenHeight(18),
 					-2, 
 					Util.getPercentOfScreenWidth(10),
 					Util.getPercentOfScreenHeight(10));
@@ -906,7 +906,10 @@ public class main extends Activity {
 							scoreWasSaved=true;
 						}
 					}
-					else {player.setJump(true);
+					else {
+						if(isPause == false)
+							player.fly();
+							//player.setJump(true);
 					}
 				}
 			}

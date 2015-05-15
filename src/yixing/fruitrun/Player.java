@@ -20,6 +20,9 @@ public class Player{
 	private boolean reachedPeak = false;
 	private boolean slowSoundplayed = false;
 	private float jumpStartY;
+	private boolean isFlying = false;
+	private final float INITAL_FLYING_TIME = 600;
+	private float flyTime = 0;
 	
 	private float velocity = 0;
 	private float velocityMax = 0;
@@ -40,7 +43,6 @@ public class Player{
 	public int bonusItems = 0;
 	private int bonusScorePerItem = 200;
 	
-	private  OpenGLRenderer glrenderer;
 	public Player(Context context, OpenGLRenderer glrenderer, int ScreenHeight) {
 		x = Util.getPercentOfScreenWidth(9); //70; 
 		y = Settings.FirstBlockHeight+Util.getPercentOfScreenHeight(4);
@@ -60,7 +62,6 @@ public class Player{
 		playerSprite = new Sprite(x, y, 0.5f, width, height, 25, 6); 
 		playerSprite.loadBitmap(playerSpriteImg);
 		glrenderer.addMesh(playerSprite);
-		this.glrenderer = glrenderer;
 		
 		playerRect = new Rect();
 		playerRect.left =(int)x;
@@ -91,11 +92,26 @@ public class Player{
 			jumpingsoundplayed = false;
 	}
 	
-	public boolean update() {
+	public void fly() {
+		isFlying = true;
+		flyTime = INITAL_FLYING_TIME;
+		y = y + Util.getPercentOfScreenHeight(45);
 		playerSprite.updatePosition(x, y);
+	}
+	
+	public boolean update() {
 		playerSprite.tryToSetNextFrame();
 		
+		if(isFlying) {
+			flyTime--;
+			// end of flight
+			if(flyTime == 0) {
+				isFlying = false;
+			}
+			return true;
+		}
 		
+		playerSprite.updatePosition(x, y);
 		if(jumpingsoundplayed==false){
 			SoundManager.playSound(3, 1);
 			jumpingsoundplayed = true;
@@ -295,10 +311,11 @@ public class Player{
 			break;
 		}
 		currentCharacter = i;
-		glrenderer.removeMesh(playerSprite);
+		/*glrenderer.removeMesh(playerSprite);
 		playerSprite = new Sprite(x, y, 0.5f, width, height, (int) frameUpdateTime, 6);
 		playerSprite.loadBitmap(playerSpriteImg);
 		glrenderer.addMesh(playerSprite);
+		*/
 	}
 
 
