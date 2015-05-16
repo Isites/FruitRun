@@ -225,9 +225,9 @@ public class Level {
 			if (0 > blockData[leftBlockIndex].BlockRect.right) {
 				appendBlockToEnd(-1);
 
-				if(BlockCounter == 7)
+				if(BlockCounter == 5)
 					appendObstaclesToEnd(true, false, false);
-				if(BlockCounter == 9)
+				if(BlockCounter == 7)
 					appendObstaclesToEnd(false, true, false);
 				if (BlockCounter > 30)
 					decideIfAndWhatObstaclesSpawn();
@@ -262,7 +262,7 @@ public class Level {
 			levelPosition += deltaLevelPosition;
 			
 			
-			mWaves.x -= deltaLevelPosition+2;
+			mWaves.x -= (deltaLevelPosition+2) / 2;
 			if (mWaves.x < -mWaves.width/2)
 				mWaves.x = 0;
 
@@ -452,8 +452,15 @@ public class Level {
 		
 		float higherHeight = newHeight + Util.getPercentOfScreenHeight(15);
 		float originHeight = newHeight;
+		boolean high = false;
 		// 可以放置的金币数
 		int coinIndex = (int) (newWidth / obstacleCoinWidth);
+		
+		if(randomGenerator.nextInt(100) < 50)
+			return;
+		if(randomGenerator.nextInt(100) < 80) {
+			high = true;
+		}
 		for(int i = 0; i < coinIndex; i++) {
 			// 产生金币概率: 60%
 			if(randomGenerator.nextInt(100) < 40) {
@@ -474,7 +481,7 @@ public class Level {
 			    
 			    newHeight = originHeight;
 			    // 40%几率增加高度
-			    if(randomGenerator.nextInt(100) < 70) {
+			    if(high) {
 			    	newHeight = higherHeight;
 			    }
 			    newCoinObstacle.y = newHeight;//blockData[rightBlockIndex].mHeight;
@@ -743,6 +750,7 @@ public class Level {
 	public void rocketRide() {
 		baseSpeed = baseSpeedMax;
 		extraSpeed = extraSpeedMax;
+		
 	}
 }
 

@@ -69,7 +69,7 @@ public class Player{
 		glrenderer.addMesh(rocketSprite);
 		
 		playerSpriteImg = Util.loadBitmapFromAssets("game_character_spritesheet_slow.png");
-		slowSprite = new Sprite(x, y, 0.5f, width, height, 25, 6); 
+		slowSprite = new Sprite(x, y, 0.5f, width, height, 25, 4); 
 		slowSprite.loadBitmap(playerSpriteImg);
 		glrenderer.addMesh(slowSprite);
 		playerSprite = slowSprite;
@@ -108,6 +108,7 @@ public class Player{
 	}
 	
 	public void fly() {
+		SoundManager.playSound(11, 1);
 		isFlying = true;
 		flyTime = INITAL_FLYING_TIME;
 		y = Util.getPercentOfScreenHeight(77);
@@ -249,7 +250,6 @@ public class Player{
 		
 		for(int i = 0; i < Level.maxObstaclesCoin; i++)
 		{
-			
 			ObstacleRect.left =  (int)Level.obstacleDataCoin[i].x;
 			ObstacleRect.top = (int)Level.obstacleDataCoin[i].y+(int)Level.obstacleCoinHeight; 
 			ObstacleRect.right = (int)Level.obstacleDataCoin[i].x+(int)Level.obstacleCoinWidth;
@@ -258,7 +258,7 @@ public class Player{
 			if( checkIntersect(playerRect, ObstacleRect) && !Level.obstacleDataCoin[i].didTrigger)
 			{
 				Level.obstacleDataCoin[i].didTrigger=true;
-				
+				SoundManager.playSound(10, 1, 0.2f, 0.2f, 0);
 				bonusItems++;
 				/*
 				if(!slowSoundplayed){    

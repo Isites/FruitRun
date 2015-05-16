@@ -12,7 +12,7 @@
         <TextView 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="火箭(个)："/>
+            android:text="火箭(500金币/个)："/>
         
         <EditText
             android:id="@+id/fly"
@@ -29,7 +29,7 @@
         <TextView 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="复活(次)："/>
+            android:text="复活(1000金币/次)："/>
         
         <EditText
             android:id="@+id/resurrection"
@@ -46,7 +46,7 @@
         <TextView 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="双倍金币(个)："/>
+            android:text="双倍金币(500金币/个)："/>
         
         <EditText
             android:id="@+id/double_coin"

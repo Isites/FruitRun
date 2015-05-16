@@ -91,6 +91,20 @@ public class HighscoreAdapter extends DbAdapter {
 		return mCursor;
 	}
 
+	public int getScoreTotal(){
+		int scoreTotal = 0;
+		Cursor cursor = fetchScores("0");
+		
+		if (cursor.isAfterLast()) {
+            return 0;
+    	}
+    	do {
+    		String scoreString = cursor.getString(2);
+    		scoreTotal = scoreTotal + Integer.parseInt(scoreString);
+    	} while(cursor.moveToNext());
+    	
+    	return scoreTotal;
+	}
 	// -------------------------------------------------------
 	// Show Single
 	public Cursor fetchSingleScore(long id) throws SQLException {

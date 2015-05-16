@@ -14,6 +14,8 @@ public class SoundManager {
 	private static HashMap<Integer, Integer> mSoundPoolMap;
 	private static AudioManager  mAudioManager;
 	private static Context mContext;
+	
+	private static boolean isOn;
  
 	private SoundManager()
 	{
@@ -43,6 +45,7 @@ public class SoundManager {
 	     mSoundPool = new SoundPool(4, AudioManager.STREAM_MUSIC, 0);
 	     mSoundPoolMap = new HashMap<Integer, Integer>();
 	     mAudioManager = (AudioManager)mContext.getSystemService(Context.AUDIO_SERVICE);
+	     SoundManager.setIsOn(true);
 	} 
  
 	/**
@@ -72,12 +75,15 @@ public class SoundManager {
 		mSoundPoolMap.put(7, mSoundPool.load(mContext, R.raw.petenicesplash , 1));
 		mSoundPoolMap.put(8, mSoundPool.load(mContext, R.raw.bonus, 1));
 		mSoundPoolMap.put(9, mSoundPool.load(mContext, R.raw.ninek, 1));
-		
+		mSoundPoolMap.put(10, mSoundPool.load(mContext, R.raw.coin, 1));
+		mSoundPoolMap.put(11, mSoundPool.load(mContext, R.raw.rock, 1));
 	}
  
 	
 	public static void playSound(int index,float speed, float volumeL, float volumeR, int loopMode)
 	{
+		if(!SoundManager.isOn)
+			return;
 		float streamVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
 	     streamVolume = streamVolume / mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
 	     if(mSoundPoolMap.get(index)!=null)
@@ -103,6 +109,10 @@ public class SoundManager {
 		mSoundPool.stop(mSoundPoolMap.get(index));
 	}
  
+	public static void setIsOn(boolean isOn) {
+		SoundManager.isOn = isOn;
+	}
+	
 	/**
 	 * Deallocates the resources and Instance of SoundManager
 	 */
