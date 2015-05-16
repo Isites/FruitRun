@@ -1,5 +1,17 @@
 package yixing.activity;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+
 import yixing.fruitrun.Button;
 import yixing.fruitrun.CounterDigit;
 import yixing.fruitrun.CounterGroup;
@@ -45,6 +57,7 @@ public class main extends Activity {
 		private ShareSimpleData share;
 		private final String FLY_TAG = "fly";
 		private final String RESURRECTION_TAG = "resurrection";
+		private final String DOUBLE_TAG = "doubleCoin";
 		
 		private static long lastCreationTime = 0;
 		private static final int MIN_CREATION_TIMEOUT = 10000;
@@ -54,6 +67,8 @@ public class main extends Activity {
 		boolean MusicLoopStartedForFirstTime = false;
 
 		boolean isRunning = false;
+
+		boolean isSavedScore = false;
 		RunnersHighView mGameView = null;
 
 	    private static final int SLEEP_TIME = 300;
@@ -133,11 +148,35 @@ public class main extends Activity {
 		}
 	    
 		public void saveScore(int score) {			
-			Intent myIntent = new Intent (this, HighScoreForm.class);
-			myIntent.putExtra("score", score);			
-			startActivity (myIntent);
+			saveState(score);
 		}
 
+		private HighscoreAdapter highScoreAdapter = null;
+		// Save Entry
+	    private void saveState(int scores) {
+	    	highScoreAdapter = new HighscoreAdapter(this);
+	        highScoreAdapter.open();
+	    	String name = "香梨";
+	        String score = scores + "";
+
+	        int isonline = 0;
+	        
+	        if(name.length() > 0) { 
+	        	// Save HS locally
+	        	try {
+	                highScoreAdapter.createHighscore(score, name, isonline);
+	            } catch (Exception e) {
+	                Log.w(Settings.LOG_TAG, "create highscore threw an exception");
+	                Log.w(Settings.LOG_TAG, "Maybe a double attempt? HTC Sensation does that for example");
+	                return;
+	            }       	
+	        	
+	        	highScoreAdapter.close();
+	        } else {
+	        	highScoreAdapter.toastMessage(R.string.hs_error_name_empty);
+	        }
+	    }
+	    
 		public void sleep() {
 			sleep(SLEEP_TIME);
 		}
@@ -160,8 +199,6 @@ public class main extends Activity {
 
 		private Button resetButton = null;
 		private Bitmap resetButtonImg = null;
-		private Button saveButton = null;
-		private Bitmap saveButtonImg = null;
 		private Button pauseButton = null;
 		private Bitmap pauseButtonImg = null;
 		private Button flyButton = null;
@@ -172,6 +209,9 @@ public class main extends Activity {
 		private Bitmap soundOnButtonImg = null;
 		private Button soundOffButton = null;
 		private Bitmap soundOffButtonImg = null;
+		private Button doubleCoinButton = null;
+		private Bitmap doubleCoinButtonImg = null;
+		
 		private RHDrawable blackRHD = null;
 		private Bitmap blackImg = null;
 		private RHDrawable gameLoadingRHD = null;
@@ -234,7 +274,6 @@ public class main extends Activity {
 		}
 		
 		public void cleanup() {
-			if (saveButtonImg != null) saveButtonImg.recycle();
 			if (blackImg != null) blackImg.recycle();
 			if (resetButtonImg!= null) resetButtonImg.recycle();
 			if (background != null) background.cleanup();
@@ -377,17 +416,7 @@ public class main extends Activity {
 					Util.getPercentOfScreenWidth(10));
 			resetButton.loadBitmap(resetButtonImg);
 			mRenderer.addMesh(resetButton);			
-			
-			saveButtonImg =Util.loadBitmapFromAssets("game_button_save.png");
-			saveButton = new Button(
-					Util.getPercentOfScreenWidth(42), 
-					height-Util.getPercentOfScreenHeight(18),
-					-2, 
-					Util.getPercentOfScreenWidth(26),
-					Util.getPercentOfScreenHeight(13));
-			saveButton.loadBitmap(saveButtonImg);
-			mRenderer.addMesh(saveButton);
-			
+
 			pauseButtonImg =Util.loadBitmapFromAssets("game_button_pause.png");
 			pauseButton = new Button(
 					Util.getPercentOfScreenWidth(85), 
@@ -397,6 +426,16 @@ public class main extends Activity {
 					Util.getPercentOfScreenWidth(10));
 			pauseButton.loadBitmap(pauseButtonImg);
 			mRenderer.addMesh(pauseButton);
+			
+			doubleCoinButtonImg =Util.loadBitmapFromAssets("game_obstacle_coin.png");
+			doubleCoinButton = new Button(
+					Util.getPercentOfScreenWidth(6), 
+					height-Util.getPercentOfScreenHeight(70),
+					-2, 
+					Util.getPercentOfScreenWidth(6),
+					Util.getPercentOfScreenWidth(6));
+			doubleCoinButton.loadBitmap(doubleCoinButtonImg);
+			mRenderer.addMesh(doubleCoinButton);
 			
 			resurrectionButtonImg = Util.loadBitmapFromAssets("game_button_resurrection.png");
 			resurrectionButton = new Button(
@@ -490,8 +529,6 @@ public class main extends Activity {
 			if(Settings.RHDEBUG)
 				Log.d("debug", "after mCounterGroup");
 			
-
-
 			mCounterDigit1 = new CounterDigit(
 					Util.getPercentOfScreenWidth(19), 
 					height-Util.getPercentOfScreenHeight(13.5f), 
@@ -562,9 +599,6 @@ public class main extends Activity {
 			
 			timeAtLastSecond = System.currentTimeMillis();
 	        runCycleCounter=0;
-	        
-	        
-	        
 	        
 			if(Settings.RHDEBUG)
 				Log.d("debug", "RunnersHighView initiation ended");
@@ -682,6 +716,10 @@ public class main extends Activity {
 			soundOnButton.setShowButton(true);
 			soundOnButton.z = 1.0f;
 			
+
+			doubleCoinButton.setShowButton(true);
+			doubleCoinButton.z = 1.0f;
+			
 			while(isRunning) {
 				while(isPause == true);
 				starttime = System.currentTimeMillis();
@@ -724,6 +762,15 @@ public class main extends Activity {
 						
 				} else {
 					if(player.y < 0){
+						if(!isSavedScore){
+							saveScore(totalScore);
+							
+							//play save sound
+							SoundManager.playSound(4, 1);
+							isSavedScore=true;
+						}
+						
+						isDouble = false;
 						if(!isFirstResured){
 							resurrectionButton.setShowButton(true);
 							resurrectionButton.z = 1.0f;
@@ -735,8 +782,6 @@ public class main extends Activity {
 							pauseButton.z = -1.0f;
 							resetButton.setShowButton(true);
 							resetButton.z = 1.0f;
-							saveButton.setShowButton(true);
-							saveButton.z = 1.0f;
 
 							if(!deathSoundPlayed){
 								SoundManager.playSound(7, 1, 0.5f, 0.5f, 0);
@@ -752,8 +797,6 @@ public class main extends Activity {
 							doUpdateCounter=false;
 							resetButton.setShowButton(true);
 							resetButton.z = 1.0f;
-							saveButton.setShowButton(true);
-							saveButton.z = 1.0f;
 
 								if(!deathSoundPlayed){
 									SoundManager.playSound(7, 1, 0.5f, 0.5f, 0);
@@ -943,7 +986,7 @@ public class main extends Activity {
 
 		}
 		
-		boolean isSound = false;
+		boolean isSound = false, isDouble = false;
 		public boolean onTouchEvent(MotionEvent event) {
 			if(!gameIsLoading){
 				if(event.getAction() == MotionEvent.ACTION_UP)
@@ -974,7 +1017,23 @@ public class main extends Activity {
 							isSound = true;
 						}
 					}
-					
+					if(doubleCoinButton.getShowButton()){
+						if(doubleCoinButton.isClicked(event.getX(), 
+								Util.getInstance().toScreenY((int)event.getY()))) {
+							if(share.getInt(DOUBLE_TAG) == 0){
+								popUserSetWindow();
+								if(isPause == false)
+									isPause = true;
+							}else
+							if(doUpdateCounter && !resurrectionButton.getShowButton()){
+								player.doubleCoin();
+								isDouble = true;
+								
+								int number = share.getInt(DOUBLE_TAG);
+								share.putInt(DOUBLE_TAG, number--);
+							}
+						}
+					}
 					if(resurrectionButton.getShowButton()) {
 						if(resurrectionButton.isClicked(event.getX(), 
 								Util.getInstance().toScreenY((int)event.getY()))) {
@@ -983,12 +1042,10 @@ public class main extends Activity {
 								if(isPause == false)
 									isPause = true;
 							}else{
+								isSavedScore = false;
 								isResurrection = true;
 								doUpdateCounter=true;
 								player.fly();
-								
-								saveButton.setShowButton(false);
-								saveButton.z = -1.0f;
 								
 								resurrectionButton.setShowButton(false);
 								resurrectionButton.z = -1.0f;
@@ -1027,11 +1084,13 @@ public class main extends Activity {
 						}
 					}
 					
-					if (resetButton.getShowButton() || saveButton.getShowButton()) {
+					if (resetButton.getShowButton()) {
 						if(resetButton.isClicked( event.getX(), Util.getInstance().toScreenY((int)event.getY()) ) ){
 							isPause = false;
 							isResurrection = false;
+							isSavedScore = false;
 							
+							player.singleCoin();
 							System.gc(); //do garbage collection
 							player.reset();
 							level.reset();
@@ -1041,9 +1100,6 @@ public class main extends Activity {
 							resurrectionButton.z = -1.0f;
 							resetButton.setShowButton(false);
 							resetButton.z = -2.0f;
-							saveButton.setShowButton(false);
-							saveButton.z = -2.0f;
-							saveButton.x = saveButton.lastX; 
 							mCounterGroup.resetCounter();
 							scoreWasSaved=false;
 							deathSoundPlayed=false;
@@ -1061,25 +1117,13 @@ public class main extends Activity {
 							
 							isFirstResured = false;
 						}
-						else if(saveButton.isClicked( event.getX(), Util.getInstance().toScreenY((int)event.getY())  ) && !scoreWasSaved){
-							//save score
-							saveButton.setShowButton(false);
-							saveButton.z = -2.0f;
-							saveButton.lastX = saveButton.x;
-							saveButton.x = -5000;
-							
-							saveScore(totalScore);
-	
-							//play save sound
-							SoundManager.playSound(4, 1);
-							scoreWasSaved=true;
-						}
 					}
 					else {
-						if(!isSound){
+						if(!isSound && !isDouble){
 							player.setJump(true);
 						}else{
 							isSound = false;
+							isDouble = false;
 						}
 					}
 				}
@@ -1089,7 +1133,7 @@ public class main extends Activity {
 		}
 	
 	
-		EditText flyEdit, resurrectionEdit;
+		EditText flyEdit, resurrectionEdit, doubleCoinEdit;
 		private void popUserSetWindow(){
 			final Context contxt = main.this;
 			
@@ -1101,6 +1145,7 @@ public class main extends Activity {
 	
 			flyEdit = (EditText) layout.findViewById(R.id.fly);
 			resurrectionEdit = (EditText) layout.findViewById(R.id.resurrection);
+			doubleCoinEdit = (EditText) layout.findViewById(R.id.double_coin);
 			
 			builder.setView(layout);
 			
@@ -1110,7 +1155,8 @@ public class main extends Activity {
 	
 				public void onClick(DialogInterface dialog, int which) {
 	
-					if(flyEdit.length() == 0 || resurrectionEdit.length() == 0){
+					if(flyEdit.length() == 0 || resurrectionEdit.length() == 0
+							|| doubleCoinEdit.length() == 0){
 						Toast.makeText(getApplicationContext(), 
 								"请输入道具数量！", Toast.LENGTH_SHORT).show();
 						if(isPause = true)
@@ -1120,7 +1166,8 @@ public class main extends Activity {
 								flyEdit.getText().toString());
 						int resurrectionNumber = Integer.parseInt(
 								resurrectionEdit.getText().toString());
-						
+						int doubleCoinNumber = Integer.parseInt(
+								doubleCoinEdit.getText().toString());
 						//调用支付
 					}
 				}

@@ -80,6 +80,13 @@ public class Player{
 		ObstacleRect = new Rect();
 	}
 	
+	public void singleCoin(){
+		bonusScorePerItem = 1;
+	}
+	public void doubleCoin(){
+		bonusScorePerItem = 2;
+	}
+	
 	public void cleanup() {
 		if (playerSpriteImg != null) playerSpriteImg.recycle();
 	}
