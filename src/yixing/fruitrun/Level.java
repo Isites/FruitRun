@@ -450,6 +450,8 @@ public class Level {
 	    
 		BlockCounter++;
 		
+		float higherHeight = newHeight + Util.getPercentOfScreenHeight(10);
+		
 		// 可以放置的金币数
 		int coinIndex = (int) (newWidth / obstacleCoinWidth);
 		for(int i = 0; i < coinIndex; i++) {
@@ -472,7 +474,7 @@ public class Level {
 			    
 			    // 40%几率增加高度
 			    if(randomGenerator.nextInt(100) < 40) {
-			    	newHeight += Util.getPercentOfScreenHeight(10);
+			    	newHeight = higherHeight;
 			    }
 			    newCoinObstacle.y = newHeight;//blockData[rightBlockIndex].mHeight;
 			    newCoinObstacle.setObstacleRect(
