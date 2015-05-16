@@ -474,7 +474,7 @@ public class Level {
 			    
 			    newHeight = originHeight;
 			    // 40%几率增加高度
-			    if(randomGenerator.nextInt(100) < 40) {
+			    if(randomGenerator.nextInt(100) < 70) {
 			    	newHeight = higherHeight;
 			    }
 			    newCoinObstacle.y = newHeight;//blockData[rightBlockIndex].mHeight;
