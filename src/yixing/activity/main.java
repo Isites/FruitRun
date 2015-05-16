@@ -39,8 +39,6 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.alarmclocksnoozers.runnershigh.R;
-
 public class main extends Activity {
 		PowerManager.WakeLock wakeLock ;
 		

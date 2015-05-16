@@ -35,8 +35,6 @@ import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alarmclocksnoozers.runnershigh.R;
-
 public class HighScoreActivity extends Activity {
 	
 	private HighscoreAdapter highScoreAdapter = null;

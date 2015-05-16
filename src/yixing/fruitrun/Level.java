@@ -450,13 +450,13 @@ public class Level {
 	    
 		BlockCounter++;
 		
-		float higherHeight = newHeight + Util.getPercentOfScreenHeight(10);
+		float higherHeight = newHeight + Util.getPercentOfScreenHeight(15);
 		float originHeight = newHeight;
 		// 可以放置的金币数
 		int coinIndex = (int) (newWidth / obstacleCoinWidth);
 		for(int i = 0; i < coinIndex; i++) {
 			// 产生金币概率: 60%
-			if(randomGenerator.nextInt(100) < 60) {
+			if(randomGenerator.nextInt(100) < 40) {
 			    // compute a fraction of the range, 0 <= frac < range
 				/*
 			    long fraction = (long)(blockData[rightBlockIndex].mWidth * 0.33 * randomGenerator.nextDouble());
