@@ -68,6 +68,7 @@ public class main extends Activity {
 
 		boolean isRunning = false;
 
+		private int totalScore = 0;
 		boolean isSavedScore = false;
 		RunnersHighView mGameView = null;
 
@@ -107,6 +108,14 @@ public class main extends Activity {
 	    	if(Settings.RHDEBUG)
 	    		Log.d("debug", "onDestroy main");
 	    	isRunning = false;
+	    	
+	    	if(!isSavedScore){
+				saveScore(totalScore);
+				
+				//play save sound
+				SoundManager.playSound(4, 1);
+				isSavedScore=true;
+			}
 	    	
 			wakeLock.release();
 			musicPlayerLoop.release();
@@ -249,7 +258,6 @@ public class main extends Activity {
 		private Bitmap mHighscoreMarkBitmap = null;
 		private RHDrawable mNewHighscore = null;
 		
-		private int totalScore = 0;
 		private boolean nineKwasplayed = false;
 		private boolean gameIsLoading = true;
 		
@@ -762,14 +770,6 @@ public class main extends Activity {
 						
 				} else {
 					if(player.y < 0){
-						if(!isSavedScore){
-							saveScore(totalScore);
-							
-							//play save sound
-							SoundManager.playSound(4, 1);
-							isSavedScore=true;
-						}
-						
 						isDouble = false;
 						if(!isFirstResured){
 							resurrectionButton.setShowButton(true);
@@ -867,7 +867,6 @@ public class main extends Activity {
 			
 			if(Settings.RHDEBUG)
 				Log.d("debug", "run method ended");
-			
 		}
 		
 		private void initHighscoreMarks()
@@ -1086,6 +1085,13 @@ public class main extends Activity {
 					
 					if (resetButton.getShowButton()) {
 						if(resetButton.isClicked( event.getX(), Util.getInstance().toScreenY((int)event.getY()) ) ){
+							if(!isSavedScore){
+								saveScore(totalScore);
+								
+								//play save sound
+								SoundManager.playSound(4, 1);
+								isSavedScore=true;
+							}
 							isPause = false;
 							isResurrection = false;
 							isSavedScore = false;
