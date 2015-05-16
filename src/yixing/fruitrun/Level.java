@@ -453,8 +453,8 @@ public class Level {
 		// 可以放置的金币数
 		int coinIndex = (int) (newWidth / obstacleCoinWidth);
 		for(int i = 0; i < coinIndex; i++) {
-			// 产生金币概率: 70%
-			if(randomGenerator.nextInt(100) < 70) {
+			// 产生金币概率: 60%
+			if(randomGenerator.nextInt(100) < 60) {
 			    // compute a fraction of the range, 0 <= frac < range
 				/*
 			    long fraction = (long)(blockData[rightBlockIndex].mWidth * 0.33 * randomGenerator.nextDouble());
@@ -469,6 +469,11 @@ public class Level {
 	    			//- newCoinObstacle.width - fraction; 
 			    
 			    newCoinObstacle.x = obstacleLeft;
+			    
+			    // 40%几率增加高度
+			    if(randomGenerator.nextInt(100) < 40) {
+			    	newHeight += Util.getPercentOfScreenHeight(10);
+			    }
 			    newCoinObstacle.y = newHeight;//blockData[rightBlockIndex].mHeight;
 			    newCoinObstacle.setObstacleRect(
 			    		obstacleLeft,
