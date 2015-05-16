@@ -778,7 +778,7 @@ public class main extends Activity {
 					level.rocketRide();
 				if(doUpdateCounter)
 				{
-					totalScore = level.getDistanceScore() + player.getBonusScore();
+					totalScore = player.getBonusScore();//level.getDistanceScore() + player.getBonusScore();
 					if (Settings.SHOW_FPS) mCounterGroup.tryToSetCounterTo(mRenderer.fps);
 					else mCounterGroup.tryToSetCounterTo(totalScore);
 					
