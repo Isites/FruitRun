@@ -6,8 +6,6 @@ import yixing.util.ShareSimpleData;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -16,13 +14,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -88,7 +83,9 @@ public class Menu extends Activity {
 		        scoreTotal.setText(scores + "");
 		        scoreTotal.setOnClickListener(new OnClickListener(){
 					public void onClick(View v) {
-						popUserSetWindow();
+						Intent intent = new Intent(Menu.this, 
+								StoreActivity.class);
+				    	startActivity(intent);
 					}
 		        });
 		        score.close();
@@ -98,6 +95,11 @@ public class Menu extends Activity {
     	
     }
     
+    public void coinClick(View view){
+    	Intent intent = new Intent(Menu.this, 
+				StoreActivity.class);
+    	startActivity(intent);
+    }
     public void help(View view){
     	Intent intent = new Intent(this, HelpActivity.class);
     	startActivity(intent);
@@ -146,47 +148,6 @@ public class Menu extends Activity {
 		  .setCancelable(true)
 		  .create();
     }
-    
-    EditText buyCoin;
-    private void popUserSetWindow(){
-		final Context contxt = Menu.this;
-		
-		final AlertDialog.Builder builder = new AlertDialog.Builder(contxt);
-		LayoutInflater inflater =
-				(LayoutInflater) contxt.getSystemService(LAYOUT_INFLATER_SERVICE);
-		final View layout = inflater.inflate(R.layout.dialog_buy_coin,
-				(ViewGroup) findViewById(R.id.dialog_buy_coin_root));
-
-		buyCoin = (EditText) layout.findViewById(R.id.buy_coin);
-		builder.setView(layout);
-		
-		builder.setTitle("输入购买金币的数量");
-	
-		builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-
-			public void onClick(DialogInterface dialog, int which) {
-
-				if(buyCoin.length() == 0 ){
-					Toast.makeText(getApplicationContext(), 
-							"请输入道具数量！", Toast.LENGTH_SHORT).show();
-				}else{
-					int coinNumber = Integer.parseInt(
-							buyCoin.getText().toString());
-					//调用支付
-				}
-			}
-		});
-		
-		builder.setNegativeButton("返回", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int which) {
-			}
-		});
-		
-		final AlertDialog dialogs = builder.create();
-
-		dialogs.show();
-		dialogs.setCanceledOnTouchOutside(false);
-	}
 
     @Override
     public void onResume(){
