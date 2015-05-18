@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="#000000"
-        android:text="游戏玩法：\n点击屏幕控制水果跳跃，不要让水果掉到坑里！游戏里吃到的金币可以购买道具。金币不够时，可以用￥来购买金币！" />
+        android:text="游戏玩法：\n点击屏幕控制香梨跳跃，不要让香梨掉到坑里！游戏里吃到的金币可以购买道具。金币不够时，可以用￥来购买金币！" />
     
     <LinearLayout 
         android:layout_width="match_parent"
@@ -74,7 +74,7 @@
         	android:layout_height="wrap_content"
         	android:layout_gravity="center_vertical"
         	android:textColor="#000000"
-        	android:text="双倍金币：使用后本次收集到的金币 ×2" />
+        	android:text="复活：死亡后可以使用，使香梨可以从死亡位置开始跑，并有火箭加速效果，一次游戏只能使用一次" />
     
     </LinearLayout>
     
