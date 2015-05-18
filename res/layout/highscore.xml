@@ -2,16 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
     android:padding="10dp"
     android:textColor="#876842" 
-    android:background="@drawable/menu_background">
+    android:background="#FFFFFF">
 
+    <ImageButton 
+		android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_margin="10dp"
+        android:background="@drawable/game_button_close"
+		android:onClick="close"/>	
+				
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
     <ScrollView
+        android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="10" android:padding="10dp">
-
         <TableLayout
             android:id="@+id/highscoreTable"
             android:layout_width="match_parent"
@@ -23,5 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="2" />
+</LinearLayout>
 
+    
 </LinearLayout>

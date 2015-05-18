@@ -1,6 +1,7 @@
 package yixing.activity;
 
 import yixing.highscore.HighscoreAdapter;
+import yixing.util.ShareSimpleData;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -9,11 +10,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.EditText;
+import android.widget.CheckBox;
 import android.widget.Toast;
 
 public class StoreActivity extends Activity{
 
+	CheckBox one, two, three, four, 
+		fly_one, fly_two, double_fly_one, double_fly_two,
+		resurrection_one, resurrection_two, double_coin_one,
+		double_coin_two;
 	@Override
     public void onCreate(Bundle savedInstanceState) {
     	requestWindowFeature(Window.FEATURE_NO_TITLE);  
@@ -22,55 +27,85 @@ public class StoreActivity extends Activity{
     	super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store); 
         
-        flyEdit = (EditText) findViewById(R.id.fly);
-		resurrectionEdit = (EditText) findViewById(R.id.resurrection);
-		doubleCoinEdit = (EditText) findViewById(R.id.double_coin);
-		buyCoin = (EditText)findViewById(R.id.buy_coin);
+        fly_one = (CheckBox) findViewById(R.id.fly_first);
+        fly_two = (CheckBox) findViewById(R.id.fly_second);
+        double_fly_one = (CheckBox) findViewById(R.id.double_fly_first);
+        double_fly_two = (CheckBox) findViewById(R.id.double_fly_second);
+        resurrection_one = (CheckBox) findViewById(R.id.resurrection_first);
+        resurrection_two = (CheckBox) findViewById(R.id.resurrection_second);
+        double_coin_one = (CheckBox) findViewById(R.id.double_coin_first);
+        double_coin_two = (CheckBox) findViewById(R.id.double_coin_second);
+		
+		one = (CheckBox) findViewById(R.id.first);
+		two = (CheckBox) findViewById(R.id.second);
+		three = (CheckBox) findViewById(R.id.third);
+		four = (CheckBox) findViewById(R.id.fourth);
 	}
 
 	public void back(View view){
 		this.finish();
 	}
 	
+	int coin = 0;
+	double coinBuy = 0;
+	int flyNumber = 0, resurrectionNumber = 0, doubleCoinNumber = 0, 
+			coinNumber = 0, doubleFlyNumber = 0;
+		int flyNumberBuy = 0, resurrectionNumberBuy = 0, doubleCoinNumberBuy = 0, 
+				doubleFlyNumberBuy = 0;
 	public void yes(View view){
-		if(flyEdit.length() == 0 && resurrectionEdit.length() == 0
-				&& doubleCoinEdit.length() == 0 && buyCoin.length() == 0){
+		if(!fly_one.isChecked() && !fly_two.isChecked() &&
+				!double_fly_one.isChecked() && !double_fly_two.isChecked()
+				&& !resurrection_one.isChecked() && !resurrection_two.isChecked()
+				&& !double_coin_one.isChecked() &&!double_coin_two.isChecked() &&
+				!one.isChecked() && !two.isChecked()
+				&& !three.isChecked() && !four.isChecked()){
 			Toast.makeText(getApplicationContext(), 
-					"请输入购买道具或金币数量！", Toast.LENGTH_SHORT).show();
+					"请在要购买的任一方框中打钩！", Toast.LENGTH_SHORT).show();
 		}else{
-			int flyNumber, resurrectionNumber, doubleCoinNumber, coinNumber;
-			if(flyEdit.length() == 0)
-				flyNumber = 0;
-			else
-				flyNumber = Integer.parseInt(
-					flyEdit.getText().toString());
 			
-			if(resurrectionEdit.length() == 0)
-				resurrectionNumber = 0;
-			else
-				resurrectionNumber = Integer.parseInt(
-					resurrectionEdit.getText().toString());
+			if(fly_one.isChecked())
+				flyNumber = 5;
+			if(fly_two.isChecked())
+				flyNumberBuy = 5000;
 			
-			if(doubleCoinEdit.length() == 0)
-				doubleCoinNumber = 0;
-			else
-				doubleCoinNumber = Integer.parseInt(
-					doubleCoinEdit.getText().toString());
+			if(resurrection_one.isChecked())
+				resurrectionNumber = 5;
+			if(resurrection_two.isChecked())
+				resurrectionNumberBuy = 5000;
 			
-			if(buyCoin.length() == 0)
-				coinNumber = 0;
-			else
-				coinNumber = Integer.parseInt(
-						buyCoin.getText().toString());
+			if(double_coin_one.isChecked())
+				doubleCoinNumber = 5;
+			if(double_coin_two.isChecked())
+				doubleCoinNumberBuy = 5000;
+
+			if(double_fly_one.isChecked())
+				doubleFlyNumber = 5;
+			if(double_fly_two.isChecked())
+				doubleFlyNumberBuy = 5000;
+			
+			if(one.isChecked())
+				coinNumber = 1;
+			if(two.isChecked())
+				coinNumber = coinNumber + 5;
+			if(three.isChecked())
+				coinNumber = coinNumber + 10;
+			if(four.isChecked())
+				coinNumber = coinNumber + 20;
 						
-			double coin = flyNumber * 0.5 + resurrectionNumber +
-					doubleCoinNumber * 0.5 + coinNumber;
-			popWindow(coin, flyNumber, resurrectionNumber, 
-					doubleCoinNumber);
+			coin = flyNumber + resurrectionNumber +
+					doubleCoinNumber  + doubleFlyNumber + coinNumber;
+			coinBuy = flyNumberBuy + resurrectionNumberBuy +
+					doubleCoinNumberBuy + doubleFlyNumberBuy;
+			
+			popWindow(coin, flyNumber, resurrectionNumber ,
+					doubleCoinNumber, doubleFlyNumber, coinNumber);
+			
 		}
 	}
 	
-	private void popWindow(final double coin, final int fly, final int resurrection, final int doubleCoin){
+	private void popWindow(final double coin, final int fly, 
+			final int resurrection, final int doubleCoin, final int doubleFly
+			, final int coinNumber){
 		final Context contxt = StoreActivity.this;
 		HighscoreAdapter score = new HighscoreAdapter(StoreActivity.this);
         score.open();
@@ -84,12 +119,28 @@ public class StoreActivity extends Activity{
 
 			public void onClick(DialogInterface dialog, int which) {
 				//调用支付SDK
+				
+				
+				popWindow(StoreActivity.this.coinBuy, 
+						flyNumberBuy, resurrectionNumberBuy, 
+						doubleCoinNumberBuy, doubleFlyNumberBuy);
 			}
 		});
 		
 		builder.setNegativeButton("返回", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				Toast.makeText(getApplicationContext(), "取消购买！", Toast.LENGTH_SHORT).show();
+			
+				popWindow(StoreActivity.this.coinBuy, 
+						flyNumberBuy, resurrectionNumberBuy, 
+						doubleCoinNumberBuy, doubleFlyNumberBuy);
+				StoreActivity.this.coin = 0;
+				StoreActivity.this.flyNumber = 0;
+				StoreActivity.this.resurrectionNumber = 0;
+				StoreActivity.this.doubleCoinNumber = 0;
+				StoreActivity.this.coinNumber = 0;
+				StoreActivity.this.doubleFlyNumber = 0;
+				
 			}
 		});
 		
@@ -98,6 +149,58 @@ public class StoreActivity extends Activity{
 		dialogs.show();
 		dialogs.setCanceledOnTouchOutside(false);
 	}
-	EditText buyCoin, doubleCoinEdit, flyEdit, resurrectionEdit;
-   
+	final String USED_COIN_TAG = "usedCoin";
+	private final String FLY_TAG = "fly";
+	private final String DOUBLE_FLY_TAG = "doubleFly";
+	private final String RESURRECTION_TAG = "resurrection";
+	private final String DOUBLE_TAG = "doubleCoin";
+	ShareSimpleData share;
+	private void popWindow(final double coin, final int fly, 
+			final int resurrection, final int doubleCoin, final int doubleFly){
+		final Context contxt = StoreActivity.this;
+		HighscoreAdapter score = new HighscoreAdapter(StoreActivity.this);
+        score.open();
+        share = new ShareSimpleData(StoreActivity.this);
+        final int scores = score.getScoreTotal() - 
+        		share.getInt(USED_COIN_TAG);
+
+        score.close();
+		final AlertDialog.Builder builder = new AlertDialog.Builder(contxt);
+		
+		if(scores < coin)
+			builder.setTitle("金币不够，请到菜单界面点击金币购买！");
+		else
+			builder.setTitle("确定花费" + coin + "个金币购买？");
+	
+		builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+			public void onClick(DialogInterface dialog, int which) {
+				if(scores >= coin){
+					share.putInt(USED_COIN_TAG, StoreActivity.this.coin + 
+							share.getInt(USED_COIN_TAG));
+					
+					share.putInt(FLY_TAG, fly);
+					share.putInt(DOUBLE_TAG, doubleCoin);
+					share.putInt(RESURRECTION_TAG, resurrection);
+					share.putInt(DOUBLE_FLY_TAG, doubleFly);
+				}
+			}
+		});
+		
+		builder.setNegativeButton("返回", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				Toast.makeText(getApplicationContext(), "取消购买！", Toast.LENGTH_SHORT).show();
+				StoreActivity.this.coinBuy = 0;
+				StoreActivity.this.flyNumberBuy = 0;
+				StoreActivity.this.resurrectionNumberBuy = 0;
+				StoreActivity.this.doubleCoinNumberBuy = 0;
+				StoreActivity.this.doubleFlyNumberBuy = 0;
+			}
+		});
+		
+		final AlertDialog dialogs = builder.create();
+
+		dialogs.show();
+		dialogs.setCanceledOnTouchOutside(false);
+	}
 }

@@ -15,9 +15,8 @@ import yixing.fruitrun.Util;
 import yixing.highscore.HighscoreAdapter;
 import yixing.util.ShareSimpleData;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -29,23 +28,20 @@ import android.os.PowerManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.Toast;
 
 public class main extends Activity {
 		PowerManager.WakeLock wakeLock ;
 		
+		private boolean isPause = false;
 		private ShareSimpleData share;
 		private final String FLY_TAG = "fly";
+		private final String DOUBLE_FLY_TAG = "doubleFly";
 		private final String RESURRECTION_TAG = "resurrection";
 		private final String DOUBLE_TAG = "doubleCoin";
-		
 		private static long lastCreationTime = 0;
 		private static final int MIN_CREATION_TIMEOUT = 10000;
 		final String USED_COIN_TAG = "usedCoin";
@@ -115,6 +111,7 @@ public class main extends Activity {
 		public void onResume() {
 			if(Settings.RHDEBUG)
 				Log.d("debug", "onResume");
+			isPause = false;
 			wakeLock.acquire();
 			if(MusicLoopStartedForFirstTime)
 				musicPlayerLoop.start();
@@ -197,6 +194,8 @@ public class main extends Activity {
 		private Bitmap resetButtonImg = null;
 		private Button pauseButton = null;
 		private Bitmap pauseButtonImg = null;
+		private Button doubleFlyButton = null;
+		private Bitmap doubleFlyButtonImg = null;
 		private Button goonButton = null;
 		private Bitmap goonButtonImg = null;
 		private Button flyButton = null;
@@ -249,9 +248,6 @@ public class main extends Activity {
 		
 		private boolean isFirstResured = false;
 		private boolean isResurrection = false;
-		private boolean isPause = false;
-		
-
 		public RunnersHighView(Context context) {
 			super(context);
 			
@@ -427,6 +423,16 @@ public class main extends Activity {
 			pauseButton.loadBitmap(pauseButtonImg);
 			mRenderer.addMesh(pauseButton);
 			
+			doubleFlyButtonImg =Util.loadBitmapFromAssets("game_button_double_fly.png");
+			doubleFlyButton = new Button(
+					Util.getPercentOfScreenWidth(5), 
+					height-Util.getPercentOfScreenHeight(65),
+					-2, 
+					Util.getPercentOfScreenWidth(6),
+					Util.getPercentOfScreenWidth(6));
+			doubleFlyButton.loadBitmap(doubleFlyButtonImg);
+			mRenderer.addMesh(doubleFlyButton);
+			
 			goonButtonImg = Util.loadBitmapFromAssets("game_button_goon.png");
 			goonButton = new Button(
 					Util.getPercentOfScreenWidth(89),
@@ -450,7 +456,7 @@ public class main extends Activity {
 			resurrectionButtonImg = Util.loadBitmapFromAssets("game_button_resurrection.png");
 			resurrectionButton = new Button(
 					Util.getPercentOfScreenWidth(5),
-					height - Util.getPercentOfScreenHeight(65),
+					height - Util.getPercentOfScreenHeight(80),
 					-2, 
 					Util.getPercentOfScreenWidth(6),
 					Util.getPercentOfScreenWidth(6));
@@ -728,6 +734,9 @@ public class main extends Activity {
 
 			doubleCoinButton.setShowButton(true);
 			doubleCoinButton.z = 1.0f;
+			
+			doubleFlyButton.setShowButton(true);
+			doubleFlyButton.z = 1.0f;
 			
 			while(isRunning) {
 				while(isPause == true);
@@ -1084,6 +1093,21 @@ public class main extends Activity {
 							}
 						}
 					}
+					if(doubleFlyButton.getShowButton() && !isPause) {
+						if(doubleFlyButton.isClicked(event.getX(), 
+								Util.getInstance().toScreenY((int)event.getY()))) {
+							if(share.getInt(DOUBLE_FLY_TAG) == 0){
+								popUserSetWindow();
+								if(isPause == false)
+									isPause = true;
+							}else
+							if(doUpdateCounter && !resurrectionButton.getShowButton()){
+								player.doubleFly();
+								int number = share.getInt(DOUBLE_FLY_TAG);
+								share.putInt(FLY_TAG, --number);
+							}
+						}
+					}
 					if(pauseButton.getShowButton()) {
 						if(pauseButton.isClicked(event.getX(), Util.getInstance().toScreenY((int)event.getY()))) {
 							pauseButton.setShowButton(false);
@@ -1168,8 +1192,12 @@ public class main extends Activity {
 			return true;
 		}
 	
-	
-		EditText flyEdit, resurrectionEdit, doubleCoinEdit;
+	private void popUserSetWindow(){
+		Toast.makeText(getApplicationContext(), "请购买道具！", Toast.LENGTH_SHORT).show();
+		Intent intent = new Intent(main.this, StoreActivity.class);
+		startActivity(intent);
+	}
+		/*EditText flyEdit, resurrectionEdit, doubleCoinEdit, doubleFlyEdit;
 		private void popUserSetWindow(){
 			final Context contxt = main.this;
 			
@@ -1179,6 +1207,7 @@ public class main extends Activity {
 			final View layout = inflater.inflate(R.layout.dialog_buy_items,
 					(ViewGroup) findViewById(R.id.dialog_buy_root));
 	
+			doubleFlyEdit = (EditText) layout.findViewById(R.id.double_fly);
 			flyEdit = (EditText) layout.findViewById(R.id.fly);
 			resurrectionEdit = (EditText) layout.findViewById(R.id.resurrection);
 			doubleCoinEdit = (EditText) layout.findViewById(R.id.double_coin);
@@ -1192,13 +1221,14 @@ public class main extends Activity {
 				public void onClick(DialogInterface dialog, int which) {
 	
 					if(flyEdit.length() == 0 && resurrectionEdit.length() == 0
-							&& doubleCoinEdit.length() == 0){
+							&& doubleCoinEdit.length() == 0 && doubleFlyEdit.length() == 0){
 						Toast.makeText(getApplicationContext(), 
 								"请输入道具数量！", Toast.LENGTH_SHORT).show();
 						if(isPause = true)
 							isPause = false;
 					}else{
-						int flyNumber, resurrectionNumber, doubleCoinNumber;
+						int flyNumber, resurrectionNumber, doubleCoinNumber,
+							doubleFlyNumber;
 						if(flyEdit.length() == 0)
 							flyNumber = 0;
 						else
@@ -1217,10 +1247,17 @@ public class main extends Activity {
 							doubleCoinNumber = Integer.parseInt(
 								doubleCoinEdit.getText().toString());
 						
+
+						if(doubleFlyEdit.length() == 0)
+							doubleFlyNumber = 0;
+						else
+							doubleFlyNumber = Integer.parseInt(
+								doubleFlyEdit.getText().toString());
+						
 						int coin = flyNumber * 500 + resurrectionNumber * 1000 +
-								doubleCoinNumber * 500;
+								doubleCoinNumber * 500 + doubleFlyNumber * 1000;
 						popWindow(coin, flyNumber, resurrectionNumber, 
-								doubleCoinNumber);
+								doubleCoinNumber, doubleFlyNumber);
 					}
 				}
 			});
@@ -1237,7 +1274,8 @@ public class main extends Activity {
 			dialogs.show();
 			dialogs.setCanceledOnTouchOutside(false);
 		}
-	private void popWindow(final int coin, final int fly, final int resurrection, final int doubleCoin){
+	private void popWindow(final int coin, final int fly, 
+			final int resurrection, final int doubleCoin, final int doubleFly){
 		final Context contxt = main.this;
 		HighscoreAdapter score = new HighscoreAdapter(main.this);
         score.open();
@@ -1261,6 +1299,7 @@ public class main extends Activity {
 					share.putInt(FLY_TAG, fly);
 					share.putInt(DOUBLE_TAG, doubleCoin);
 					share.putInt(RESURRECTION_TAG, resurrection);
+					share.putInt(DOUBLE_FLY_TAG, doubleFly);
 				}
 				if(isPause == true)
 					isPause = false;
@@ -1278,6 +1317,6 @@ public class main extends Activity {
 
 		dialogs.show();
 		dialogs.setCanceledOnTouchOutside(false);
-	}
+	}*/
 	}
 }

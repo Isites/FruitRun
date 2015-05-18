@@ -55,4 +55,21 @@
             android:numeric="integer"
             android:hint="5" />
     </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="双倍飞行(1000金币/个)："/>
+        
+        <EditText
+            android:id="@+id/double_fly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numeric="integer"
+            android:hint="5" />
+    </LinearLayout>
 </LinearLayout>

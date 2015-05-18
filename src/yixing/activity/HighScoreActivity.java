@@ -72,6 +72,9 @@ public class HighScoreActivity extends Activity {
 		}, 500);
     }
     
+    public void close(View view){
+    	this.finish();
+    }
     private void showLocalScore() {
     	
     	highscoreTable.removeAllViews();

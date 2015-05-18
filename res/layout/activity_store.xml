@@ -12,14 +12,48 @@
         <TextView 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="火箭(0.5元/个)："/>
+            android:text="火箭(5元/10个)："/>
         
-        <EditText
-            android:id="@+id/fly"
+         <CheckBox
+            android:id="@+id/fly_first"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+         
+         <TextView 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:numeric="integer"
-            android:hint="10" />
+            android:text="火箭(5000金币/10个)："/>
+        
+         <CheckBox
+            android:id="@+id/fly_second"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    
+	<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="双倍飞行(5元/5个)："/>
+        
+        <CheckBox
+            android:id="@+id/double_fly_first"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="双倍飞行(5000金币/5个)："/>
+        
+        <CheckBox
+            android:id="@+id/double_fly_second"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
     
     <LinearLayout
@@ -30,14 +64,22 @@
         <TextView 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="复活(1元/次)："/>
+            android:text="复活(5元/5次)："/>
         
-        <EditText
-            android:id="@+id/resurrection"
+         <CheckBox
+            android:id="@+id/resurrection_first"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+         
+         <TextView 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:numeric="integer"
-            android:hint="5" />
+            android:text="复活(5000金币/5次)："/>
+        
+         <CheckBox
+            android:id="@+id/resurrection_second"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <LinearLayout
@@ -48,14 +90,22 @@
         <TextView 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="双倍金币(0.5元/个)："/>
+            android:text="双倍金币(5元/10个)："/>
         
-        <EditText
-            android:id="@+id/double_coin"
+        <CheckBox
+            android:id="@+id/double_coin_first"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        
+        <TextView 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:numeric="integer"
-            android:hint="5" />
+            android:text="双倍金币(5000金币/10个)："/>
+        
+        <CheckBox
+            android:id="@+id/double_coin_second"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
     
      <LinearLayout
@@ -66,16 +116,62 @@
         <TextView 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="购买金币(1元/1000个)："/>
+            android:text="购买金币："/>
         
-        <EditText
-            android:id="@+id/buy_coin"
-            android:layout_width="wrap_content"
+        <TextView
+             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="10000"
-            android:numeric="integer" />
+            android:text="1元/1000金币"/>
+        <CheckBox
+            android:id="@+id/first"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+      
     </LinearLayout>
     
+     <LinearLayout 
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:gravity="center_horizontal"
+         android:orientation="horizontal">
+          <TextView
+             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5元/6000金币"/>
+        <CheckBox
+            android:id="@+id/second"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+     </LinearLayout>
+     
+     <LinearLayout 
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:gravity="center_horizontal"
+         android:orientation="horizontal">
+          <TextView
+             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10元/15000金币"/>
+        <CheckBox
+            android:id="@+id/third"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+     </LinearLayout>
+     <LinearLayout 
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:gravity="center_horizontal"
+         android:orientation="horizontal">
+           <TextView
+             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="20元/40000金币"/>
+        <CheckBox
+            android:id="@+id/fourth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+     </LinearLayout>
      <LinearLayout 
          android:layout_width="match_parent"
          android:layout_height="wrap_content"

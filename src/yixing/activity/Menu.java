@@ -92,9 +92,13 @@ public class Menu extends Activity {
 		        Log.d("Menu", scores + "");
 			}
 		}, 500);
-    	
     }
     
+    public void store(View view){
+    	Intent intent = new Intent(Menu.this, 
+				StoreActivity.class);
+    	startActivity(intent);
+    }
     public void coinClick(View view){
     	Intent intent = new Intent(Menu.this, 
 				StoreActivity.class);

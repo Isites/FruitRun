@@ -117,6 +117,16 @@ public class Player{
 		this.switchCharacter(ROCKET_CHARACTER);
 	}
 	
+	public void doubleFly() {
+		SoundManager.playSound(11, 1);
+		isFlying = true;
+		flyTime = INITAL_FLYING_TIME * 2;
+		y = Util.getPercentOfScreenHeight(77);
+		playerSprite.updatePosition(x, y);
+		this.updatePlayerRect();
+		this.switchCharacter(ROCKET_CHARACTER);
+	}
+	
 	public boolean update() {
 		playerSprite.tryToSetNextFrame();
 		playerSprite.updatePosition(x, y);
