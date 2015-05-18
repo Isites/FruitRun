@@ -210,11 +210,9 @@ public class main extends Activity {
 		private Button doubleCoinButton = null;
 		private Bitmap doubleCoinButtonImg = null;
 		
-		private RHDrawable blackRHD = null;
-		private Bitmap blackImg = null;
 		private RHDrawable gameLoadingRHD = null;
 		private Bitmap gameLoadingImg = null;
-		private float blackImgAlpha;
+		//private float blackImgAlpha;
 		private boolean deathSoundPlayed = false;
 		private OpenGLRenderer mRenderer = null;
 		private CounterGroup mCounterGroup;
@@ -270,7 +268,13 @@ public class main extends Activity {
 		}
 		
 		public void cleanup() {
-			if (blackImg != null) blackImg.recycle();
+			if (pauseButtonImg != null) pauseButtonImg.recycle();
+			if (goonButtonImg != null) goonButtonImg.recycle();
+			if (flyButtonImg != null) flyButtonImg.recycle();
+			if (resurrectionButtonImg != null) resurrectionButtonImg.recycle();
+			if (soundOnButtonImg != null) soundOnButtonImg.recycle();
+			if (soundOffButtonImg != null) soundOffButtonImg.recycle();
+			if (doubleCoinButtonImg != null) doubleCoinButtonImg.recycle();
 			if (resetButtonImg!= null) resetButtonImg.recycle();
 			if (background != null) background.cleanup();
 			if (mHighscoreMarkBitmap != null) mHighscoreMarkBitmap.recycle();
@@ -578,7 +582,7 @@ public class main extends Activity {
 			if(Settings.RHDEBUG)
 				Log.d("debug", "after counter");
 			
-
+/*
 			blackImg = Bitmap.createBitmap(16, 16, Bitmap.Config.ARGB_8888);
 			blackRHD = new RHDrawable(0, 0, 1, width, height);
 			blackImg.eraseColor(-16777216);
@@ -586,7 +590,7 @@ public class main extends Activity {
 			blackRHD.setColor(0, 0, 0, blackImgAlpha);
 			blackRHD.loadBitmap(blackImg);
 			mRenderer.addMesh(blackRHD);
-			
+*/		
 			gameLoadingRHD.z = -1.0f;
 			
 			mHighscoreMarkBitmap = Util.loadBitmapFromAssets("game_highscoremark.png");
@@ -653,21 +657,21 @@ public class main extends Activity {
 				
 
 				long timeAtStart = System.currentTimeMillis();
-				while (System.currentTimeMillis() < timeAtStart + 2000 && isRunning)
-				{
-					blackImgAlpha-=0.005;
-					blackRHD.setColor(0, 0, 0, blackImgAlpha);
-					Thread.sleep(10);
-				}
+				//while (System.currentTimeMillis() < timeAtStart + 2000 && isRunning)
+				//{
+				//	blackImgAlpha-=0.005;
+				//	blackRHD.setColor(0, 0, 0, blackImgAlpha);
+				//	Thread.sleep(10);
+				//}
 				
 				
-				blackImg.recycle();
+				//blackImg.recycle();
 				gameLoadingImg.recycle();
 				
-				blackRHD.shouldBeDrawn = false;
+				//blackRHD.shouldBeDrawn = false;
 				gameLoadingRHD.shouldBeDrawn = false;
 				
-				mRenderer.removeMesh(blackRHD);
+				//mRenderer.removeMesh(blackRHD);
 				mRenderer.removeMesh(gameLoadingRHD);
 				
 				if(Settings.RHDEBUG)
@@ -697,8 +701,8 @@ public class main extends Activity {
 			if(Settings.RHDEBUG)
 				Log.d("debug", "run method after try catch");
 			
-			blackRHD.z=-1.0f;
-			blackRHD.setColor(0, 0, 0, 0);
+			//blackRHD.z=-1.0f;
+			//blackRHD.setColor(0, 0, 0, 0);
 			//mRenderer.removeMesh(blackRHD); //TODO: find a way to remove mesh without runtime errors
 
 			long timeForOneCycle=0;
@@ -739,7 +743,7 @@ public class main extends Activity {
 				//Log.i("speed", "frameUpdateTime: " + frameUpdateTime);
 				// 暂定80
 				if(!player.isFlying()) {
-					if(frameUpdateTime < 80) {
+					if(frameUpdateTime < 77) {
 						player.switchCharacter(Player.NORMAL_CHARACTER);
 					}
 					else {

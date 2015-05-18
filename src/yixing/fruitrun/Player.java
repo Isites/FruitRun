@@ -20,7 +20,7 @@ public class Player{
 	private boolean slowSoundplayed = false;
 	private float jumpStartY;
 	private boolean isFlying = false;
-	private final float INITAL_FLYING_TIME = 600;
+	private final float INITAL_FLYING_TIME = 620;
 	private float flyTime = 0;
 	
 	private float velocity = 0;

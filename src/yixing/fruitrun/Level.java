@@ -450,7 +450,7 @@ public class Level {
 	    
 		BlockCounter++;
 		
-		float higherHeight = newHeight + Util.getPercentOfScreenHeight(15);
+		float higherHeight = newHeight + Util.getPercentOfScreenHeight(20);
 		float originHeight = newHeight;
 		boolean high = false;
 		// 可以放置的金币数
