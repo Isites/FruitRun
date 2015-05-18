@@ -31,12 +31,12 @@
 				android:layout_margin="5dp"/>	
 				
 			<Button android:id="@+id/scoreButton"
-			    android:visibility="invisible"
 				android:layout_width="fill_parent"
         		android:layout_height="fill_parent"
+        		android:text="帮助"
 				android:layout_weight="3"
-				android:background="@drawable/menu_button_highscore"
-				android:layout_margin="5dp"/>	
+				android:layout_margin="5dp"
+				android:onClick="help"/>	
 
 			 <View
 		    	android:layout_width="fill_parent"

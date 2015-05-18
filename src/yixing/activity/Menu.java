@@ -97,6 +97,11 @@ public class Menu extends Activity {
 		}, 500);
     	
     }
+    
+    public void help(View view){
+    	Intent intent = new Intent(this, HelpActivity.class);
+    	startActivity(intent);
+    }
     public void playGame(View view) {
 
 		// Loading Toast
