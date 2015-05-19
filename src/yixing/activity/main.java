@@ -131,6 +131,10 @@ public class main extends Activity {
 
 			super.onRestart();
 		}
+		public void sleep() {
+			sleep(SLEEP_TIME);
+		}
+
 		@Override
 		public void onPause() {
 			if(Settings.RHDEBUG)
@@ -170,10 +174,6 @@ public class main extends Activity {
 	        }
 	    }
 	    
-		public void sleep() {
-			sleep(SLEEP_TIME);
-		}
-
 		public void sleep(int time) {
 			try {
 				Thread.sleep(time);
@@ -204,6 +204,8 @@ public class main extends Activity {
 		private Bitmap resurrectionButtonImg = null;
 		private Button soundOnButton = null;
 		private Bitmap soundOnButtonImg = null;
+		private Button closeButton = null;
+		private Bitmap closeButtonImg = null;
 		private Button soundOffButton = null;
 		private Bitmap soundOffButtonImg = null;
 		private Button doubleCoinButton = null;
@@ -422,6 +424,16 @@ public class main extends Activity {
 					Util.getPercentOfScreenWidth(10));
 			pauseButton.loadBitmap(pauseButtonImg);
 			mRenderer.addMesh(pauseButton);
+			
+			closeButtonImg =Util.loadBitmapFromAssets("game_button_close.png");
+			closeButton = new Button(
+					Util.getPercentOfScreenWidth(89), 
+					height-Util.getPercentOfScreenHeight(80),
+					-2, 
+					Util.getPercentOfScreenWidth(10),
+					Util.getPercentOfScreenWidth(10));
+			closeButton.loadBitmap(closeButtonImg);
+			mRenderer.addMesh(closeButton);
 			
 			doubleFlyButtonImg =Util.loadBitmapFromAssets("game_button_double_fly.png");
 			doubleFlyButton = new Button(
@@ -737,6 +749,9 @@ public class main extends Activity {
 			
 			doubleFlyButton.setShowButton(true);
 			doubleFlyButton.z = 1.0f;
+			
+			closeButton.setShowButton(true);
+			closeButton.z = 1.0f;
 			
 			while(isRunning) {
 				while(isPause == true);
@@ -1121,7 +1136,11 @@ public class main extends Activity {
 							isPause = true;
 						}
 					}
-					
+					if(closeButton.getShowButton()) {
+						if(closeButton.isClicked(event.getX(), Util.getInstance().toScreenY((int)event.getY()))) {
+							main.this.finish();
+						}
+					}
 					if(goonButton.getShowButton() && !isPauseClick){
 						if(goonButton.isClicked(event.getX(), Util.getInstance().toScreenY((int)event.getY()))) {
 							pauseButton.setShowButton(true);
