@@ -5,7 +5,7 @@
       android:installLocation="preferExternal">
       
     <uses-sdk 
-        android:minSdkVersion="7"
+        android:minSdkVersion="9"
         android:targetSdkVersion="21"/>
 	
       <supports-screens

@@ -12,7 +12,7 @@
         <TextView 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="火箭(5元/10个)："/>
+            android:text="火箭(0.01元/1个)："/>
         
          <CheckBox
             android:id="@+id/fly_first"
@@ -38,7 +38,7 @@
         <TextView 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="双倍飞行(5元/5个)："/>
+            android:text="双倍飞行(1元/1个)："/>
         
         <CheckBox
             android:id="@+id/double_fly_first"
@@ -64,7 +64,7 @@
         <TextView 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="复活(5元/5次)："/>
+            android:text="复活(2元/2次)："/>
         
          <CheckBox
             android:id="@+id/resurrection_first"
@@ -90,7 +90,7 @@
         <TextView 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="双倍金币(5元/10个)："/>
+            android:text="双倍金币(4元/8个)："/>
         
         <CheckBox
             android:id="@+id/double_coin_first"
@@ -137,7 +137,7 @@
           <TextView
              android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="5元/6000金币"/>
+            android:text="6元/6000金币"/>
         <CheckBox
             android:id="@+id/second"
             android:layout_width="wrap_content"
@@ -152,7 +152,7 @@
           <TextView
              android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="10元/15000金币"/>
+            android:text="8元/10000金币"/>
         <CheckBox
             android:id="@+id/third"
             android:layout_width="wrap_content"
@@ -166,7 +166,7 @@
            <TextView
              android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="20元/40000金币"/>
+            android:text="10元/15000金币"/>
         <CheckBox
             android:id="@+id/fourth"
             android:layout_width="wrap_content"

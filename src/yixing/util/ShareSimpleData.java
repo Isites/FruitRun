@@ -42,4 +42,13 @@ public class ShareSimpleData {
 	public int getInt(String tag){
 		return preferences.getInt(tag, 0);
 	}
+	
+	public void putFloat(String tag, float data){
+		editor.putFloat(tag, data);
+		editor.apply();
+	}
+	
+	public float getFloat(String tag){
+		return preferences.getFloat(tag, 0f);
+	}
 }

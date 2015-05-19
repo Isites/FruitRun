@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -46,9 +47,10 @@ public class StoreActivity extends Activity{
 		this.finish();
 	}
 	
-	int coin = 0;
+	float coin = 0;
 	double coinBuy = 0;
-	int flyNumber = 0, resurrectionNumber = 0, doubleCoinNumber = 0, 
+	Float flyNumber = 0f;
+	int resurrectionNumber = 0, doubleCoinNumber = 0, 
 			coinNumber = 0, doubleFlyNumber = 0;
 		int flyNumberBuy = 0, resurrectionNumberBuy = 0, doubleCoinNumberBuy = 0, 
 				doubleFlyNumberBuy = 0;
@@ -64,46 +66,45 @@ public class StoreActivity extends Activity{
 		}else{
 			
 			if(fly_one.isChecked())
-				flyNumber = 5;
+				flyNumber = (float) 0.01;
 			if(fly_two.isChecked())
 				flyNumberBuy = 5000;
 			
 			if(resurrection_one.isChecked())
-				resurrectionNumber = 5;
+				resurrectionNumber = 2;
 			if(resurrection_two.isChecked())
 				resurrectionNumberBuy = 5000;
 			
 			if(double_coin_one.isChecked())
-				doubleCoinNumber = 5;
+				doubleCoinNumber = 4;
 			if(double_coin_two.isChecked())
 				doubleCoinNumberBuy = 5000;
 
 			if(double_fly_one.isChecked())
-				doubleFlyNumber = 5;
+				doubleFlyNumber = 1;
 			if(double_fly_two.isChecked())
 				doubleFlyNumberBuy = 5000;
 			
 			if(one.isChecked())
 				coinNumber = 1;
 			if(two.isChecked())
-				coinNumber = coinNumber + 5;
+				coinNumber = coinNumber + 6;
 			if(three.isChecked())
-				coinNumber = coinNumber + 10;
+				coinNumber = coinNumber + 8;
 			if(four.isChecked())
-				coinNumber = coinNumber + 20;
-						
+				coinNumber = coinNumber + 10;
+					
 			coin = flyNumber + resurrectionNumber +
 					doubleCoinNumber  + doubleFlyNumber + coinNumber;
 			coinBuy = flyNumberBuy + resurrectionNumberBuy +
 					doubleCoinNumberBuy + doubleFlyNumberBuy;
-			
 			popWindow(coin, flyNumber, resurrectionNumber ,
 					doubleCoinNumber, doubleFlyNumber, coinNumber);
 			
 		}
 	}
 	
-	private void popWindow(final double coin, final int fly, 
+	private void popWindow(final float coin, final double fly, 
 			final int resurrection, final int doubleCoin, final int doubleFly
 			, final int coinNumber){
 		final Context contxt = StoreActivity.this;
@@ -135,7 +136,7 @@ public class StoreActivity extends Activity{
 						flyNumberBuy, resurrectionNumberBuy, 
 						doubleCoinNumberBuy, doubleFlyNumberBuy);
 				StoreActivity.this.coin = 0;
-				StoreActivity.this.flyNumber = 0;
+				StoreActivity.this.flyNumber = 0f;
 				StoreActivity.this.resurrectionNumber = 0;
 				StoreActivity.this.doubleCoinNumber = 0;
 				StoreActivity.this.coinNumber = 0;
@@ -176,8 +177,8 @@ public class StoreActivity extends Activity{
 
 			public void onClick(DialogInterface dialog, int which) {
 				if(scores >= coin){
-					share.putInt(USED_COIN_TAG, StoreActivity.this.coin + 
-							share.getInt(USED_COIN_TAG));
+					share.putFloat(USED_COIN_TAG, (float) (StoreActivity.this.coin + 
+							share.getFloat(USED_COIN_TAG)));
 					
 					share.putInt(FLY_TAG, fly);
 					share.putInt(DOUBLE_TAG, doubleCoin);
